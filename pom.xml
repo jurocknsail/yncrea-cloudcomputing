@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.yncrea.cloudcomputing</groupId>
-	<artifactId>helloworld</artifactId>
+	<artifactId>yncrea-hellomicro</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>helloworld</name>
+	<name>yncrea-hellomicro</name>
 	<description>HelloWorld Project for Cloud Computing Course @Yncrea</description>
 
 	<distributionManagement>
@@ -49,6 +49,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>io.fabric8</groupId>
+			<artifactId>docker-maven-plugin</artifactId>
+			<version>0.33.0</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -68,6 +73,34 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<images>
+						<image>
+							<name>jurocknsail/yncrea-hellomicro</name>
+							<alias>dockerfile</alias>
+							<build>
+								<contextDir>${project.basedir}</contextDir>
+								<dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile>
+								<tags>
+									<tag>1.0.0</tag>
+								</tags>
+							</build>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>docker</id>
+						<phase>install</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
