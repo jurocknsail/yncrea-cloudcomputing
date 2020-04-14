@@ -54,6 +54,11 @@
 			<artifactId>docker-maven-plugin</artifactId>
 			<version>0.33.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.kiwigrid</groupId>
+			<artifactId>helm-maven-plugin</artifactId>
+			<version>5.4</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -85,19 +90,50 @@
 							<build>
 								<contextDir>${project.basedir}</contextDir>
 								<dockerFile>${project.basedir}/src/docker/Dockerfile</dockerFile>
-								<tags>
-									<tag>1.0.0</tag>
-								</tags>
 							</build>
 						</image>
 					</images>
 				</configuration>
 				<executions>
 					<execution>
-						<id>docker</id>
-						<phase>install</phase>
+						<id>docker-build</id>
+						<phase>package</phase>
 						<goals>
 							<goal>build</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>docker-save</id>
+						<phase>package</phase>
+						<goals>
+							<goal>save</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.kiwigrid</groupId>
+				<artifactId>helm-maven-plugin</artifactId>
+				<version>5.4</version>
+				<configuration>
+					<chartDirectory>${project.basedir}/src/helm/chart</chartDirectory>
+					<chartVersion>${project.version}</chartVersion>
+					<!-- This is the related section to use local binary with auto-detection enabled. -->
+					<useLocalHelmBinary>true</useLocalHelmBinary>
+				</configuration>
+				<executions>
+					<execution>
+						<id>helm-lint</id>
+						<phase>test</phase>
+						<goals>
+							<goal>lint</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>helm-package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>package</goal>
 						</goals>
 					</execution>
 				</executions>
