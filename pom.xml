@@ -93,6 +93,7 @@
 							</build>
 						</image>
 					</images>
+					<skipSave>false</skipSave>
 				</configuration>
 				<executions>
 					<execution>
@@ -116,8 +117,9 @@
 				<artifactId>helm-maven-plugin</artifactId>
 				<version>5.4</version>
 				<configuration>
-					<chartDirectory>${project.basedir}/src/helm/chart</chartDirectory>
+					<chartDirectory>${project.basedir}/src/helm/chart/yncrea-hellomicro</chartDirectory>
 					<chartVersion>${project.version}</chartVersion>
+					<outputDirectory>${project.build.directory}</outputDirectory>
 					<!-- This is the related section to use local binary with auto-detection enabled. -->
 					<useLocalHelmBinary>true</useLocalHelmBinary>
 				</configuration>
