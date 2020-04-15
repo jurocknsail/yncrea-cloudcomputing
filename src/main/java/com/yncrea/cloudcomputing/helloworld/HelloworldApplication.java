@@ -22,6 +22,12 @@ public class HelloworldApplication {
 		return "Hello Docker World";
 	}
 
+	@RequestMapping("/health")
+	@ResponseBody
+	public String health() {
+		return "I work fine, implement me !";
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(HelloworldApplication.class, args);
 	}
