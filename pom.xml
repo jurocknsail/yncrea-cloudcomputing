@@ -152,7 +152,7 @@
 						<phase>package</phase>
 						<configuration>
 							<executable>helm</executable>
-							<commandlineArgs>delete silly-unicorn --purge</commandlineArgs>
+							<commandlineArgs>delete silly-unicorn</commandlineArgs>
 							<successCodes>
 								<successCode>0</successCode>
 								<successCode>1</successCode>
