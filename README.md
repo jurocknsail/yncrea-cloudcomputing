@@ -1,7 +1,8 @@
 # Hello Microservice
 
 An amazing test micro-service using Java Spring Boot for the course purpose.
-It does basically ... Nothing :)
+
+It does basically ... nothing :)
 
 ## Prerequisites
 * Having Docker installed
@@ -22,12 +23,12 @@ unset DOCKER_CERT_PATH
 unset DOCKER_MACHINE_NAME
 ```
 
-Note :
-> If it is not taken into account, copy/paste commands aboce to your shell config file ( eg. ~.bashrc)
+*Note :*
+> If it is not taken into account, copy/paste commands above to your shell config file ( eg. ~.bashrc)
 >
 > Source  it
 >
->Restart your IDE
+> Restart your IDE
 
 * Build the micro service using maven :
 ```shell
@@ -47,7 +48,7 @@ docker run -p 8080:8080 -t yncrea/hellomicro:latest
 
 * Access your application REST APIs with your browser.
 
-Example : <localhost:8080/hello>
+Example : <http://localhost:8080/hello>
 
 ## Deploying with Minikube and Helm
 
@@ -63,12 +64,12 @@ export DOCKER_CERT_PATH="/Users/jberger/.minikube/certs"
 export MINIKUBE_ACTIVE_DOCKERD="minikube"
 ```
 
-Note :
-> If it is not taken into account, copy/paste commands aboce to your shell config file ( eg. ~.bashrc)
+*Note :*
+> If it is not taken into account, copy/paste commands above to your shell config file ( eg. ~.bashrc)
 >
-> Source  it
+> Source  the file
 >
->Restart your IDE
+> Restart your IDE
 
 * Build the micro service using maven :
 ```shell
