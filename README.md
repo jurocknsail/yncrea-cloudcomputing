@@ -24,7 +24,7 @@ unset DOCKER_MACHINE_NAME
 ```
 
 *Note :*
-> If it is not taken into account, copy/paste commands above to your shell config file ( eg. ~.bashrc)
+> If it is not taken into account (usually when using IDE embedded maven), copy/paste commands above to your shell config file ( eg. ~.bashrc)
 >
 > Source  it
 >
@@ -65,7 +65,7 @@ export MINIKUBE_ACTIVE_DOCKERD="minikube"
 ```
 
 *Note :*
-> If it is not taken into account, copy/paste commands above to your shell config file ( eg. ~.bashrc)
+> If it is not taken into account (usually when using IDE embedded maven), copy/paste commands above to your shell config file ( eg. ~.bashrc)
 >
 > Source  the file
 >
@@ -78,5 +78,6 @@ mvn clean install
 It will create the docker image, push it to minikube registry. Then it will build the Helm chart, and install it to minikube, using the just pushed docker image.
 
 * Access your application REST APIs with your browser.
+
 Example : <http://192.168.99.100:8080/hello>
 
