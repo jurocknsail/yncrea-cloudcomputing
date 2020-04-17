@@ -98,7 +98,7 @@ Example : <http://192.168.99.100:8080/hello>
 ---
 
 ## Integrations
-Slack notifications using [ voxmedia/github-action-slack-notify-build ](https://github.com/voxmedia/github-action-slack-notify-build)
+Slack notifications using [ voxmedia/github-action-slack-notify-build ](https://github.com/voxmedia/github-action-slack-notify-build) for the maven build.
 > Scopes used are :
 >
 > chat:write
