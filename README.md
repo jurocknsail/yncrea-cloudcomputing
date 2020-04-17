@@ -1,15 +1,20 @@
 # Hello Microservice
 
-An amazing test micro-service using Java Spring Boot for the course purpose.
+An amazing test micro-service using Java Spring Boot for the "Intro to Cloud Computing" course purpose.
 
 It does basically ... nothing :)
 
+---
+
 ## Prerequisites
+* Having a Github account
 * Having Docker installed
 * Having Helm installed
-* Having a Kubernetes cluster ready (such as Minikube)
+* Having a Kubernetes cluster ready (Minikube fits perfectly for local development)
 
-## Deploying with Docker
+---
+
+## Deploying as a simple Container with Docker
 
 * Configure docker to push the docker image in the local docker registry (default behavior) :
 ```shell
@@ -50,7 +55,11 @@ docker run -p 8080:8080 -t yncrea/hellomicro:latest
 
 Example : <http://localhost:8080/hello>
 
-## Deploying with Minikube and Helm
+---
+
+## Deploying as an orchestrated Chart with Kubernetes and Helm
+
+### Minikube
 
 * Configure docker to push the docker image in the minikube docker registry instead of local one :
 ```shell
@@ -80,4 +89,8 @@ It will create the docker image, push it to minikube registry. Then it will buil
 * Access your application REST APIs with your browser.
 
 Example : <http://192.168.99.100:8080/hello>
+<br/><br/>
 
+### AWS EKS Cluster  
+
+*To be continued ...*
