@@ -21,7 +21,7 @@ jobs:
         if: success()
         id: slack # IMPORTANT: reference this step ID value in future Slack steps
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_BOT_TOKEN: ${{ secrets. SLACK_BOT_TOKEN }}
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: cloudcomputing-cicd
@@ -39,7 +39,7 @@ jobs:
       - name: Notify slack success
         if: success()
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_BOT_TOKEN: ${{ secrets. SLACK_BOT_TOKEN }}
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           # Updates existing message from the first step
@@ -51,7 +51,7 @@ jobs:
       - name: Notify slack fail
         if: failure()
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_BOT_TOKEN: ${{ secrets. SLACK_BOT_TOKEN }}
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           # Updates existing message from the first step
