@@ -94,3 +94,8 @@ Example : <http://192.168.99.100:8080/hello>
 ### AWS EKS Cluster  
 
 *To be continued ...*
+
+---
+
+## Integrations
+> Slack notifs ongoing
