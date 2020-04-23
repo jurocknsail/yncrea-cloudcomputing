@@ -1,0 +1,8 @@
+site_name: 'Yncrea - Intro to Cloud Computing Course'
+nav:
+  - Home: 'README.md'
+theme:
+  name: 'material'
+markdown_extensions:
+  - codehilite
+copyright: '&copy; 2020 Julien Berger'
