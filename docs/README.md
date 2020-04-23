@@ -106,3 +106,7 @@ Slack notifications using [ voxmedia/github-action-slack-notify-build ](https://
 > channels:read
 >
 > groups:read
+
+
+<br></br>
+Github Action [Deploy MkDocs](https://github.com/marketplace/actions/deploy-mkdocs).
