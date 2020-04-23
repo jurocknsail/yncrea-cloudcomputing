@@ -36,10 +36,6 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-  docs:
-    name: Deploy docs
-    runs-on: ubuntu-latest
-    steps:
       - name: Checkout master
         uses: actions/checkout@v1
 
