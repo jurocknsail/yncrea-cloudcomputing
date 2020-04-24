@@ -4,6 +4,8 @@ Please follow the instructions on this page {==carefully==}, as they will help y
 
 The goal of the prerequisite step is to provide you a fully working development environment, containing Docker and Kubernetes.
 
+---
+
 !!! tip
     If you are using Windows 10 or Mac, you can also use [Docker Desktop](https://www.docker.com/products/docker-desktop) in place of minikube.
 
@@ -24,6 +26,8 @@ In order to achieve that, you'll be guided through the following steps:
 * With Minikube, you will install a Virtual Machine in VirtualBox, containing Docker and Kubernetes
 
 The diagram on the bottom of this page is designed to help you to understand how Windows, your VM, Docker and Kubernetes are interacting.
+
+---
 
 **To perform this lab:**
 
@@ -139,13 +143,14 @@ The diagram on the bottom of this page is designed to help you to understand how
 
     !!! info
         Again, to go back to default config, you'll have to unset the variables (or remove them on Windows) :
-        ```shell
+        ```bash
          unset DOCKER_TLS_VERIFY
          unset DOCKER_HOST
          unset DOCKER_CERT_PATH
          unset DOCKER_MACHINE_NAME
         ```
 
+---
 
 Below you can see a diagram of your workstation setup, which should help you understanding how the different components are interacting:  
 
