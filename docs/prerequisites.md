@@ -90,20 +90,20 @@ The diagram on the bottom of this page is designed to help you to understand how
             @FOR /f "tokens=*" %i IN ('minikube docker-env') DO @%i
 
     - For Shell (Cygwin, Git Bash):  
-    
+            ```bash
             eval(minikube docker-env)
-
+            ```
         or
-
+            ```bash
             eval $(minikube docker-env)
-            
+            ```
         It will set following variables :
-      
-              export DOCKER_TLS_VERIFY="1"
-              export DOCKER_HOST="tcp://192.168.99.100:2376"
-              export DOCKER_CERT_PATH="/Users/jberger/.minikube/certs"
-              export MINIKUBE_ACTIVE_DOCKERD="minikube"
- 
+          ```bash
+          export DOCKER_TLS_VERIFY="1"
+          export DOCKER_HOST="tcp://192.168.99.100:2376"
+          export DOCKER_CERT_PATH="/Users/jberger/.minikube/certs"
+          export MINIKUBE_ACTIVE_DOCKERD="minikube"
+          ```
     
            > This step allows Docker CLI and Kubernetes CLI to target the daemons inside the Minikube VM.
            > If you don't do this, your docker image will be pushed to your local Docker Registry, 
@@ -111,7 +111,7 @@ The diagram on the bottom of this page is designed to help you to understand how
         
            > To go back to the default config if needed, you can run :                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
              ```bash
-             val "$(docker-machine env -u)"
+             eval "$(docker-machine env -u)"
              ```
 
 1. **Verify that you can access the Docker CLI:**
@@ -128,12 +128,12 @@ The diagram on the bottom of this page is designed to help you to understand how
  - On Windows by settings the environement variables manually.
 
     It will be mandatory later when we will use Maven to automate the build.
-    
+          ```bash
            export DOCKER_TLS_VERIFY="1"
            export DOCKER_HOST="tcp://192.168.99.100:2376"
            export DOCKER_CERT_PATH="/Users/jberger/.minikube/certs"
            export MINIKUBE_ACTIVE_DOCKERD="minikube"
-
+          ```
     !!! tip
         While using an IDE, you may have to restart it for these changes to take effect ...
 
