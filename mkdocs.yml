@@ -1,6 +1,17 @@
 site_name: 'Yncrea - Intro to Cloud Computing Course'
 nav:
   - Home: 'README.md'
+  - Prerequisites: prerequisites.md
+  - Docker Lab: docker.md
+  - Kubernetes Lab: kubernetes.md
+  - Getting Started on Github: github.md
+  - Github Actions: actions.md
+  - CI with Github Actions and Docker: dockerhub.md
+  - Getting Started with AWS: aws.md
+  - Cloudformation Deployment: cloudformation.md
+  - Deploy Containers with ECS: ecs.md
+  - Cloudformation Linting: cfn-nag.md
+  - EKS Setup: eks.md
 theme:
   name: 'material'
 markdown_extensions:
