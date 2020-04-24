@@ -2,6 +2,8 @@ site_name: 'Yncrea - Intro to Cloud Computing Course'
 nav:
   - Home: 'README.md'
   - Prerequisites: prerequisites.md
+  - Sample Java Spring Boot Project: javaspringboot.md
+  - Maven Lab: maven.md
   - Docker Lab: docker.md
   - Kubernetes Lab: kubernetes.md
   - Getting Started on Github: github.md
@@ -14,6 +16,9 @@ nav:
   - EKS Setup: eks.md
 theme:
   name: 'material'
+  palette:
+    primary: blue
+    accent: blue
 markdown_extensions:
   - codehilite
 copyright: '&copy; 2020 Julien Berger'

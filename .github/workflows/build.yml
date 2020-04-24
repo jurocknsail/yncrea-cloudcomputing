@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout master branch
+        uses: actions/checkout@v2
 
       - name: Notify slack that build is starting ...
         if: success()
@@ -35,9 +36,6 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-
-      - name: Checkout master
-        uses: actions/checkout@v1
 
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master

@@ -1,10 +1,4 @@
 # Prerequisites
-* Having a Github account
-* Having Docker installed
-* Having Helm installed
-* Having a Kubernetes cluster ready (Minikube fits perfectly for local development)
-* Having an AWS Educate Account
-
 
 Please follow the instructions on this page carefully, as they will help you avoiding obstacles in the next exercices.  
 
@@ -14,13 +8,19 @@ The goal of the prerequisite step is to provide you a fully working development 
 
 In order to achieve that, you'll be guided through the following steps:
 
+* Create a [Github Account](https://github.com/join?source=header-home) if you don't already have one
+
+* Create a [Docker Hub](https://hub.docker.com/signup) Account if you don't already have one 
+
 * Install Chocolatey, a Package Manager for Windows
+
 * With Chocolatey, you will install the following packages on your workstation:  
-    * VirtualBox, a VM Manager
+    * VirtualBox, a VM Manager : __if you already have it, don't re-install it !__
+      
     * Docker CLI and Kubernetes CLI
     * Minikube, a tool that helps you installing a Docker and Kubernetes Development environment
-    * Python, a programming language that you'll need later in the course
     * AWS CLI, you'll need it later in the course
+    
 * With Minikube, you will install a Virtual Machine in VirtualBox, containing Docker and Kubernetes
 
 The diagram on the bottom of this page is designed to help you to understand how Windows, your VM, Docker and Kubernetes are interacting.
@@ -29,13 +29,16 @@ To perform this lab:
 
 1. Install Chocolatey according to the instructions [here](https://chocolatey.org/install). You do not have to enter your email address in the first step.  
 
-1. Launch a terminal with Windows Administrator rights and install Minikube, Kubectl (the Kubernetes CLI) and the Docker CLI with the help of Chocolatey:  
+1. Launch a terminal with Windows Administrator rights and install VirtualBox, Python, Minikube, Kubectl (the Kubernetes CLI) and the Docker CLI with the help of Chocolatey:
 
-        choco install -y python virtualbox minikube kubernetes-cli docker awscli
+     **ATTENTION** : Please remove the items you arleady have in the command below, no need to reinstall them !  
+
+       choco install -y python virtualbox minikube kubernetes-cli docker awscli
 
 1. Launch Minikube:  
-
-        minikube --docker-env HTTP_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env HTTPS_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env NO_PROXY="127.0.0.1,192.168.99.0/24,10.0.0.0/8" start
+     **ATTENTION** : If your are not using ISEN Network, DO NOT set the proxy settings !
+        
+       minikube --docker-env HTTP_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env HTTPS_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env NO_PROXY="127.0.0.1,192.168.99.0/24,10.0.0.0/8" start
 
     **Notes on the parameters:**  
 
@@ -74,8 +77,24 @@ To perform this lab:
             eval(minikube docker-env)
 
         or
-            eval $(minikube docker-env)
 
+            eval $(minikube docker-env)
+            
+      It will set following variables :
+      ```shell
+      export DOCKER_TLS_VERIFY="1"
+      export DOCKER_HOST="tcp://192.168.99.100:2376"
+      export DOCKER_CERT_PATH="/Users/jberger/.minikube/certs"
+      export MINIKUBE_ACTIVE_DOCKERD="minikube"
+      ```
+    
+       > This step allows Docker CLI and Kubernetes CLI to target the daemons inside the Minikube VM.
+    If you don't do this, your docker image will be pushed to your local Docker Registry, and the Kubernetes Cluster on the Minikube VM won't be able to access it !
+    
+       > To go back to the default config if needed, you can run :                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+       >```shell
+       > val "$(docker-machine env -u)"
+       >```
 1. Verify that you can access the Docker CLI:  
 
         docker info
@@ -84,6 +103,25 @@ To perform this lab:
 
         kubectl version
 
-Below you can see an diagram of your workstation setup, which should help you understanding how the different components are interacting:  
+1. When satisfied with your configuration, make make it permanent and system wide by editing your *.bashrc* file and sourcing it, or settings the environement variables manually on Windows.
+
+    It will be mandatory later when we will use Maven to automate the build.
+    ```shell
+    export DOCKER_TLS_VERIFY="1"
+    export DOCKER_HOST="tcp://192.168.99.100:2376"
+    export DOCKER_CERT_PATH="/Users/jberger/.minikube/certs"
+    export MINIKUBE_ACTIVE_DOCKERD="minikube"
+    ```
+    > Note : While using an IDE, you may have to restart it for these changes to take effect ...
+
+    > Again, to go back to default config, you'll have to unset the variables (or remove them on Windows) :
+    >```shell
+    > unset DOCKER_TLS_VERIFY
+    > unset DOCKER_HOST
+    > unset DOCKER_CERT_PATH
+    > unset DOCKER_MACHINE_NAME
+    >```
+   
+Below you can see a diagram of your workstation setup, which should help you understanding how the different components are interacting:  
 
 ![Workstation Setup](./files/prerequisites/setup.png "Workstation Setup")

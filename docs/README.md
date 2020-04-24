@@ -6,7 +6,9 @@ The course takes place over two days and intends to give students an overview of
 
 ## Day 1
 
-1. [Prerequisites](./prerequisites.md)  
+1. [Prerequisites](./prerequisites.md)
+1. [Sample Project](./javaspringboot.md)
+1. [Maven Lab](./maven.md)
 1. [Docker Lab](./docker.md)
 1. [Kubernetes Lab](./kubernetes.md)
 1. [Getting Started on Github](./github.md)
