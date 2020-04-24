@@ -7,7 +7,7 @@ nav:
   - Docker Lab: docker.md
   - Kubernetes Lab: kubernetes.md
   - Getting Started on Github: github.md
-  - Github Actions: actions.md
+  - Github Actions: github-actions.md
   - CI with Github Actions and Docker: dockerhub.md
   - Getting Started with AWS: aws.md
   - Cloudformation Deployment: cloudformation.md
@@ -20,5 +20,25 @@ theme:
     primary: blue
     accent: blue
 markdown_extensions:
-  - codehilite
+  - codehilite:
+      linenums: true
+  - admonition
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+  - pymdownx.tilde
 copyright: '&copy; 2020 Julien Berger'

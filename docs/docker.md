@@ -6,6 +6,7 @@
 The goal here is to Dontainerize the Spring Boot Microservice we just created using Docker.
 
 1. Create the Dockerfile
+
     >TODO
 
 1. Build the micro service using maven to get the JAR file ready int the target repository:
@@ -35,4 +36,5 @@ The goal here is to Dontainerize the Spring Boot Microservice we just created us
    Example : <http://localhost:8080/hello>
 
 1. Automatize the **build** using Maven Fabric8 plugin :
+    
     > TODO

@@ -4,6 +4,7 @@ The goal of this exercise is to show you how to create a CI Pipeline for contain
 For this Lab, we will use the automation platform of Github, called Github Actions.
 
 At the end of the exercise, should have added a Github Actions YAML file to your repository and on each commit and push to the master branch, a new Docker image should be built automatically, and pushed to dockerhub.
+
 As a bonus, you can setup a build notification on #Slack !
 
 ## Build Image

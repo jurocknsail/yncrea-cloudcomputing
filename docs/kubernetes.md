@@ -7,13 +7,17 @@
 ## Minikube
 
 1. Create the Chart archive
+
     > TODO
 
 1. Deploy the Chart to Minikube using Helm
+
     > TODO
 
 1. Automatize using Maven Helm plugin :
+
     > TODO
+
     ```shell
     mvn clean install
     ```
@@ -21,4 +25,4 @@
     
     * Access your application REST APIs with your browser.
     
-    Example : <http://192.168.99.100:8080/hello>
+        Example : <http://192.168.99.100:8080/hello>

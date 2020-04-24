@@ -1,4 +1,4 @@
-# Cloudformation Deployment through Github Actions (1 hour)
+# Cloudformation Deployment through Github Actions
 
 This exercise is building up on exercise 2.1 (Getting started with AWS).
 

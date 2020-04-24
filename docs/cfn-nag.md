@@ -1,4 +1,4 @@
-# Cloudformation Linting (1 hour)
+# Cloudformation Linting
 
 As you saw in the presentation, all layers of your application must be properly secured. This what we call **Defense in Depth**.
 

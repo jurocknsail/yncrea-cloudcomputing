@@ -1,4 +1,4 @@
-# Getting started with Github (1 hour)
+# Getting started with Github
 
 The goal of this exercise is to upload your current progress into a version control system.
 
