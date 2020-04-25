@@ -16,6 +16,8 @@ nav:
   - EKS Setup: eks.md
 theme:
   name: 'material'
+  logo: files/yncrea.png
+  favicon: files/yncrea.png
   palette:
     primary: blue
     accent: blue
