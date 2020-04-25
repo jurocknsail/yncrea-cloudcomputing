@@ -2,7 +2,7 @@
 
 The goal here is to create a sample micro service coded in [Java Spring Boot](https://spring.io/projects/spring-boot) built with Maven.
 
-1. Create the micro service using [Spring Initializr](https://start.spring.io/) online tool.
+1. **Create** the micro service using [Spring Initializr](https://start.spring.io/) online tool.
     * Fill required fields as the image below
     !!! warning
         Don't forget to add "Spring Web" dependency !
@@ -18,7 +18,7 @@ The goal here is to create a sample micro service coded in [Java Spring Boot](ht
         !!! tip
             IntelliJ Idea Community Edition is a very good choice ... Just saying ...
         
-1. Edit the code
+1. **Edit** the code
 
     * Modify the main class :
     
@@ -58,7 +58,7 @@ The goal here is to create a sample micro service coded in [Java Spring Boot](ht
        
         ```
 
-1. Test it with the embedded Tomcat Server
+1. **Test** it with the embedded Tomcat Server
     
     * Build the project using your IDE Maven Window
     

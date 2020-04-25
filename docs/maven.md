@@ -4,7 +4,7 @@
 
 In this course we will use it to automate our development phases.
 
-1. Install Maven
+1. **Install Maven**
     
     Well, if you are using a decent IDE, it is already embedded  :thumbsup:
     
@@ -17,7 +17,7 @@ In this course we will use it to automate our development phases.
     choco install maven
     ```
 
-1. The POM
+1. **The POM**
     
     This is where all the magic happens ! It is the `xml` file where you can add all the things your app needs to work.
     
@@ -26,22 +26,85 @@ In this course we will use it to automate our development phases.
         The libraries your application need to function. These are called {==dependencies==}.
         
         ````xml linenums="1"
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+      	<dependencies>
+            ...
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+            </dependency>
+            ...
+      	</dependencies>
         ````
       
     * Plugins
     
-        > TODO
-    
-    * Phases
+        Maven is - at its heart - a plugin execution framework. All work is done by {==plugins==}.
+        The best idea is to look online for a plugin doing what you want to do.
         
-        > TODO
-    
-    * Goals
-    
-        > TODO
-    
-    
+        In our case, we want to build Docker images and create Helm Charts for Kubernetes.
+        
+        Fortunately, numerous plugins doing such thing are available. We may use :
+        
+        - [Fabric8 Plugin](https://github.com/fabric8io/fabric8-maven-plugin)
+        - [Helm Plugin](https://github.com/kiwigrid/helm-maven-plugin)
+        
+        They are declared in the pom as following :
+        
+        ````xml linenums="1" hl_lines="13 15"
+      	<build>
+            ...
+			<plugin>
+				<groupId>com.kiwigrid</groupId>
+				<artifactId>helm-maven-plugin</artifactId>
+				<version>5.4</version>
+				<configuration>
+					...
+				</configuration>
+				<executions>
+					<execution>
+						<id>helm-package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+            ...
+      	</build>
+        ````     
+        One important thing to note is that we can {==configure==} plugins.
+        
+        We can also set when they enter the game in the build by associating them with maven {==phases==}.
+        
+        And of course, tell the plugin what to do using its own {==goals==}.
+        
+        !!! tip
+            Maven has several phases available, happening in this order :
+            ````xml linenums="1"
+                <phases>
+                  <phase>validate</phase>
+                  <phase>initialize</phase>
+                  <phase>generate-sources</phase>
+                  <phase>process-sources</phase>
+                  <phase>generate-resources</phase>
+                  <phase>process-resources</phase>
+                  <phase>compile</phase>
+                  <phase>process-classes</phase>
+                  <phase>generate-test-sources</phase>
+                  <phase>process-test-sources</phase>
+                  <phase>generate-test-resources</phase>
+                  <phase>process-test-resources</phase>
+                  <phase>test-compile</phase>
+                  <phase>process-test-classes</phase>
+                  <phase>test</phase>
+                  <phase>prepare-package</phase>
+                  <phase>package</phase>
+                  <phase>pre-integration-test</phase>
+                  <phase>integration-test</phase>
+                  <phase>post-integration-test</phase>
+                  <phase>verify</phase>
+                  <phase>install</phase>
+                  <phase>deploy</phase>
+                </phases>
+            ````
