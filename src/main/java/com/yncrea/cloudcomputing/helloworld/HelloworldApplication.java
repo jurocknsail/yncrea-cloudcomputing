@@ -19,7 +19,10 @@ public class HelloworldApplication {
 
 	@RequestMapping("/")
 	public String home() {
-		return "Hello Docker World";
+
+		String hostname = System.getenv("HOSTNAME");
+		return "Hello Docker World - hostname : " + hostname;
+
 	}
 
 	@RequestMapping("/health")

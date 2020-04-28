@@ -4,6 +4,8 @@
 
 In this course we will use it to automate our development phases.
 
+---
+
 1. **Install Maven**
     
     Well, if you are using a decent IDE, it is already embedded  :thumbsup:

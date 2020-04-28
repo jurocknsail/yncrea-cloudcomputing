@@ -38,13 +38,13 @@ The diagram on the bottom of this page is designed to help you to understand how
 
 1. **Install needed Tools:**
 
-    Launch a terminal with Windows Administrator rights and install VirtualBox, Python, Minikube, Kubectl (the Kubernetes CLI) and the Docker CLI with the help of Chocolatey:
+    Launch a terminal with Windows Administrator rights and install VirtualBox, Python, Minikube, Kubectl (the Kubernetes CLI), Helm and the Docker CLI with the help of Chocolatey:
     
     !!! warning
         Please remove the items you arleady have in the command below, no need to reinstall them.
         
     ```bash 
-    choco install -y python virtualbox minikube kubernetes-cli docker awscli
+    choco install -y python virtualbox minikube kubernetes-cli docker helm awscli
     ```
  
 1. **Launch Minikube:**
