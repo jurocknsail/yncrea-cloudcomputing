@@ -410,42 +410,42 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
     - **Verify** the Chart in the {==test==} phase using the {==lint==} goal
     - **Package** the Chart into an archive in the {==package==} phase, using the {==package==} goal.
 
-    ??? example "Solution"
-        ````xml linenums="1" hl_lines="1 22 24"
-        	<build>
-        		<plugins>
-        		    ...
-                    <plugin>
-                        <groupId>com.kiwigrid</groupId>
-                        <artifactId>helm-maven-plugin</artifactId>
-                        <version>5.4</version>
-                        <configuration>
-                            <chartDirectory>${project.basedir}/src/helm/chart/yncrea-hellomicro</chartDirectory>
-                            <chartVersion>${project.version}</chartVersion>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
-                            <!-- This is the related section to use local binary with auto-detection enabled. -->
-                            <useLocalHelmBinary>true</useLocalHelmBinary>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>helm-lint</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>lint</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>helm-package</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>package</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-        		</plugins>
-        	</build>
-        ````
+        ??? example "Solution"
+            ````xml linenums="1" hl_lines="18 20 25 27"
+                <build>
+                    <plugins>
+                        ...
+                        <plugin>
+                            <groupId>com.kiwigrid</groupId>
+                            <artifactId>helm-maven-plugin</artifactId>
+                            <version>5.4</version>
+                            <configuration>
+                                <chartDirectory>${project.basedir}/src/helm/chart/yncrea-hellomicro</chartDirectory>
+                                <chartVersion>${project.version}</chartVersion>
+                                <outputDirectory>${project.build.directory}</outputDirectory>
+                                <!-- This is the related section to use local binary with auto-detection enabled. -->
+                                <useLocalHelmBinary>true</useLocalHelmBinary>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <id>helm-lint</id>
+                                    <phase>test</phase>
+                                    <goals>
+                                        <goal>lint</goal>
+                                    </goals>
+                                </execution>
+                                <execution>
+                                    <id>helm-package</id>
+                                    <phase>package</phase>
+                                    <goals>
+                                        <goal>package</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </build>
+            ````
 
 1. Finally use a third plugin : `exec-maven-plugin` in order to (in the maven `install` phase):
     
@@ -453,7 +453,7 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
     - Deploy the new release with the same name, of the Chart we just built 
     
         ??? example "Solution"
-            ````xml linenums="1" hl_lines="1 22 24"
+            ````xml linenums="1" hl_lines="11 21 26 32"
             	<build>
             		<plugins>
             		    ...
