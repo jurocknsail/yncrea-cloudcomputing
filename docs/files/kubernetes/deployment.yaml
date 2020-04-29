@@ -19,6 +19,9 @@ spec:
         - name: yncrea-hellomicro
           image: <your_docker_id>/yncrea-hellomicro:latest
           imagePullPolicy: IfNotPresent
+          env:
+            - name: GREETING
+              value: "You"
           ports:
             - name: http
               containerPort: 8080

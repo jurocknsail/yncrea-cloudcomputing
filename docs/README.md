@@ -2,7 +2,7 @@
 
 This training material is part of **_ITII 3 - Cloud Computing Course_** for **YNCREA Toulon**.
 
-The course takes place over two days and intends to give students an overview of all technologies that are revolving around Continuous Integration and Delivery with a special focus on "Cloud" technologies.
+The course takes place over two days and intends to give students an overview of all technologies that are evolving around Continuous Integration and Delivery with a special focus on "Cloud" technologies.
 
 ## Day 1
 

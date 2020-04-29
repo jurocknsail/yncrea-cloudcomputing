@@ -109,9 +109,135 @@ Download the following file to your *kubernetes* folder:
 
 ---
 
-## Helm Charts
+## Application Config
 
-> TODO : Create the chart manaully reusing resource created for simple deployment, no templating
+1. For the next step, we we'll see how to configure an application in Kubernetes.  
+   You might have noticed that in the main Java Class, we are referencing an environment variable `GREETING` with the default value _"You"_.  
+   In a first step, we will change the Kubernetes deployment and modify the environment variable section the Pod template:  
+
+		kubectl edit deployment yncrea-hellomicro
+
+	Then modify the `GREETING` variable so the µS will greet yourself, and save.
+	
+	The deployement should be `Edited`.
+
+1. Refresh your browser, and see how to greeting changed.
+
+1. Now let's use another mean to configure our application: the Kubernetes **ConfigMap**. Download the sample ConfigMap to your `src/kubernetes` folder:  
+
+    - [configmap.yaml](./files/kubernetes/configmap.yaml)
+
+    This way, you can decouple the application from the deployment configuration and therefore ease the reusability of your application. 
+    
+    You can deploy the ConfigMap with the following command:  
+
+		kubectl apply -f src/kubernetes/configmap.yaml
+
+1. Now, you'll have to modify your deployment in order to consume the ConfigMap:
+
+		kubectl edit deployment yncrea-hellomicro
+
+	And edit the file in the following way:
+
+    ````yaml linenums="1" hl_lines="5 6 7 8"
+        spec:
+          containers:
+          - env:
+            - name: GREETING
+              valueFrom:
+                configMapKeyRef:
+                  key: greeting
+                  name: yncrea-hellomicro-configmap
+    ````
+
+1. Refresh your browser, and see how to greeting changed.
+
+    !!! success
+        Congratulations, you just learned how to configure an application in Kubernetes unsing Configmaps !
+
+---
+
+## Application Secrets
+
+Kubernetes also supports objects of the type **Secret**, that are meant to store sensitive data. 
+
+Secrets can either be injected as environment variables or mounted in the Pods filesystem.
+
+As you already learned how to inject environment variables, let's now inject the Kubernetes secret as a file into our pod.
+
+1. Deploy a secret in our Kubernetes cluster: 
+
+		kubectl create secret generic yncrea-hellomicro-secret --from-literal=secret.txt="my very secret secret agent name"
+
+    !!! tip
+        You can also create Secrets from a [file](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually).
+        It will be usefull later to automatize our deployment.
+    
+1. Update your Pod definiton to mount the _yncrea-hellomicro-secret_ secret in `/var/secret/`:
+
+		kubectl edit deployment yncrea-hellomicro
+
+	And edit the file in the following way:
+
+    ````yaml linenums="1" hl_lines="19 20 21 22 28 29 30 31"
+    spec:
+      containers:
+      - env:
+        - name: GREETING
+          valueFrom:
+            configMapKeyRef:
+              key: greeting
+              name: yncrea-hellomicro-configmap
+        image: test/cloudcomputing:latest
+        imagePullPolicy: IfNotPresent
+        name: yncrea-hellomicro
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/secret
+          name: yncrea-hellomicro-secret
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: yncrea-hellomicro-secret
+        secret:
+          secretName: yncrea-hellomicro-secret
+    ````
+
+1. Now, you'll have to modify your deployment in order to consume the Secret:
+
+		kubectl edit deployment yncrea-hellomicro
+
+	And edit the file in the following way:
+
+    ````yaml linenums="1" hl_lines="5 6 7 8"
+        spec:
+          containers:
+          - env:
+            - name: GREETING
+              valueFrom:
+                secretKeyRef:
+                  key: secret.txt
+                  name: yncrea-hellomicro-secret
+    ````
+   
+1. Refresh your browser, and see how the greeting changed.
+
+    !!! success
+        Congratulations, you just learned how to configure an application in Kubernetes using Secrets !
+
+---
+
+## Helm Charts
 
 To deploy our containers on kubernetes, we could create k8s objects and deploy them individually as above.
 
@@ -122,12 +248,107 @@ We would then be able to install, upgrade, delete ... any release of our µS, in
 The solution is : **Helm Charts**. Have a look to their awesome [documentation](https://helm.sh/) :face_with_monocle: !
 
 1. Create the Chart
+    
+    According to documentation, we may adopt the appropriate [structure](https://helm.sh/docs/topics/charts/#the-chart-file-structure).
 
-    > TODO
+    In our case we have a very simple deployment and we DON'T need :
+    
+    - The `charts` directory since we have no subcharts
+    
+    - The `crds` directory since we have no custom ressources
+        
+        !!! info
+            You can create the `Optional` files (documentation mainly) if you want to.
+    
+    So let's proceed :
+    
+    - Create the folders `src/helm/chart/yncrea-hellomicro`.
+    
+        !!! warning
+            The last folder **MUST** be named according to your Chart name !
+    
+    - Inside, create the `templates` directory and move there the k8s objects we created previously :
+        -   deployment.yaml
+        -   service.yaml
+        
+    - In the Chart folder (`src/helm/chart/yncrea-hellomicro`), download and put :
+        -   [Chart.yaml](./files/kubernetes/Chart.yaml)
+        -   [values.yaml](./files/kubernetes.values.yaml)
+        
+        !!! info
+            `Chart.yaml` is the declaration of your Chart
+            
+            `values.yaml` is the file meant to configure your Chart
+        
+    - Use the values defined in `values.yaml` to configure your Chart.
+    
+        ??? example "Solution for `deployment.yaml`"
+            ````yaml linenums="1" hl_lines="9 20"
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: yncrea-hellomicro
+              labels:
+                app.kubernetes.io/name: yncrea-hellomicro
+            
+            spec:
+              replicas: {{ .Values.replicaCount }}
+              selector:
+                matchLabels:
+                  app.kubernetes.io/name: yncrea-hellomicro
+              template:
+                metadata:
+                  labels:
+                    app.kubernetes.io/name: yncrea-hellomicro
+                spec:
+                  containers:
+                    - name: yncrea-hellomicro
+                      image: {{ .Values.image.repository }}:{{ .Values.image.version }}
+                      imagePullPolicy: IfNotPresent
+                      ports:
+                        - name: http
+                          containerPort: 8080
+                          protocol: TCP
+            ````
+
+        ??? example "Solution for `service.yaml`"
+            ````yaml linenums="1" hl_lines="12 13"
+            apiVersion: v1
+            kind: Service
+            metadata:
+              name: yncrea-hellomicro-service
+            spec:
+              selector:
+                app.kubernetes.io/name: yncrea-hellomicro
+              ports:
+                - protocol: TCP
+                  port: 80
+                  targetPort: 8080
+                  nodePort: {{ .Values.service.nodePort }}
+              type: {{ .Values.service.type }}
+            ````
 
 1. Deploy the Chart to Minikube using Helm
 
-    > TODO
+    Simply use the Helm CLI to deploy the Chart :
+    
+        helm install --name silly-unicorn src/helm/chart/yncrea-hellomicro
+        
+    !!! note
+        We fix the name of the release ( `--name` ) in order to be able to upgrade/delete it automatically. 
+        
+        Otherwise, Helm would assign a random name.
+        
+    Verify your Chart deployed properly the µS (its {==deployment==} and {==service==}). 
+    
+    Check everything is working as expected by accessing your REST APIs in your browser as done before.
+    
+    !!! success
+        Congratulation, you deployed your fisrt Chart !
+
+1. Upgrade the Chart image
+
+    > TODO : show how easy it is to change nb of replicats, the docker image used etc ... by just doing an helm upgrade
 
 1. Automatize using Maven Helm plugin :
 
@@ -141,3 +362,8 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
     * Access your application REST APIs with your browser.
     
         Example : <http://192.168.99.100:30080/hello>
+
+
+## Remote Debug
+
+> TODO
