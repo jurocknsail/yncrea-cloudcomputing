@@ -1,47 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "yncrea-hellomicro.fullname" . }}
+  name: yncrea-hellomicro
   labels:
-    {{- include "yncrea-hellomicro.labels" . | nindent 4 }}
+    app.kubernetes.io/name: yncrea-hellomicro
+
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "yncrea-hellomicro.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/name: yncrea-hellomicro
   template:
     metadata:
       labels:
-        {{- include "yncrea-hellomicro.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/name: yncrea-hellomicro
     spec:
-    {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-      serviceAccountName: {{ include "yncrea-hellomicro.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: yncrea-hellomicro
+          image: {{ .Values.image.repository }}:{{ .Values.image.version }}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MY_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: secret.txt
+                  name: yncrea-hellomicro-secret
+            - name: GREETING
+              valueFrom:
+                configMapKeyRef:
+                  name: yncrea-hellomicro-configmap
+                  key: greeting
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}

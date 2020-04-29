@@ -6,7 +6,7 @@ You may know that Docker is about Containers, so let's start by answering the qu
 
 ---
 
-## Deploying manually with Docker
+## Building & Deploying manually with Docker
 
 The goal here is to Containerize the Spring Boot Microservice we just created.
 

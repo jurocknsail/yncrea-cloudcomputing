@@ -120,6 +120,11 @@ Download the following file to your *kubernetes* folder:
 	Then modify the `GREETING` variable so the µS will greet yourself, and save.
 	
 	The deployement should be `Edited`.
+	
+	!!! warning
+	    A K8S ressource edited with `kubectl edit` command is **temporary**. 
+	    
+	    The modification will be lost when deleting / re-deploying the app. 
 
 1. Refresh your browser, and see how to greeting changed.
 
@@ -219,15 +224,20 @@ As you already learned how to inject environment variables, let's now inject the
 
 	And edit the file in the following way:
 
-    ````yaml linenums="1" hl_lines="5 6 7 8"
+    ````yaml linenums="1" hl_lines="4 5 6 7 8"
         spec:
           containers:
           - env:
-            - name: GREETING
+            - name: MY_SECRET
               valueFrom:
                 secretKeyRef:
                   key: secret.txt
                   name: yncrea-hellomicro-secret
+            - name: GREETING
+              valueFrom:
+                configMapKeyRef:
+                  key: greeting
+                  name: yncrea-hellomicro-configmap
     ````
    
 1. Refresh your browser, and see how the greeting changed.
@@ -265,13 +275,16 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
     - Create the folders `src/helm/chart/yncrea-hellomicro`.
     
         !!! warning
-            The last folder **MUST** be named according to your Chart name !
+            The last folder **MUST** be named according to your Chart name ! (to define in the `Chart.yaml` file)
     
     - Inside, create the `templates` directory and move there the k8s objects we created previously :
-        -   deployment.yaml
-        -   service.yaml
-        
-    - In the Chart folder (`src/helm/chart/yncrea-hellomicro`), download and put :
+        -   `deployment.yaml`
+        -   `service.yaml`
+        -   `configmap.yaml`
+    
+    - Edit the `deployment.yaml` to reports the changes done previously to get the env variables from the Configmap and the Secret.
+    
+    - In the `Chart` folder (`src/helm/chart/yncrea-hellomicro`), download and put :
         -   [Chart.yaml](./files/kubernetes/Chart.yaml)
         -   [values.yaml](./files/kubernetes.values.yaml)
         
@@ -344,15 +357,144 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
     Check everything is working as expected by accessing your REST APIs in your browser as done before.
     
     !!! success
-        Congratulation, you deployed your fisrt Chart !
+        Congratulation, you deployed your fisrt Chart (or Application) using Helm !
 
 1. Upgrade the Chart image
 
-    > TODO : show how easy it is to change nb of replicats, the docker image used etc ... by just doing an helm upgrade
+    At this moment, we have our Chart ready, our app is running.
+    
+    But if you try the `/secret` API, you will notice our secret is gone.
+    
+    Let's add it back to the chart, this time using a K8S ressource file.
+    
+    - Put the file [secret.yaml](./files/kubernetes/secret.yaml) in your Chart's templates directory.
+    
+    - Check it seems correct.
+        !!! info
+            the value of the data is our text, base64 encoded for security.
+            
+    - Then try {==upgrading==} your application using :
+    
+        ````bash
+        helm upgrade silly-unicorn src/helm/chart/yncrea-hellomicro
+        ```` 
+      
+        !!! warning
+            You may need to delete previously created secret ...
+         
+    - Check the `/secret` API is now working as expected.
+    
+        !!! success
+            Congratulation, you upgraded your first application using Helm !
+            
+---
 
-1. Automatize using Maven Helm plugin :
+## Deploying automatically with Maven :
 
-    > TODO
+**Automatize the build** using Maven Helm plugin :
+
+1. **Find** the latest Helm plugin online
+ 
+    Add the dependency to you pom.
+
+    ??? example "Solution"
+        ````xml
+		<dependency>
+			<groupId>com.kiwigrid</groupId>
+			<artifactId>helm-maven-plugin</artifactId>
+			<version>5.4</version>
+		</dependency>
+        ````
+
+1. **Configure** the plugin to :
+    - **Verify** the Chart in the {==test==} phase using the {==lint==} goal
+    - **Package** the Chart into an archive in the {==package==} phase, using the {==package==} goal.
+
+    ??? example "Solution"
+        ````xml linenums="1" hl_lines="1 22 24"
+        	<build>
+        		<plugins>
+        		    ...
+                    <plugin>
+                        <groupId>com.kiwigrid</groupId>
+                        <artifactId>helm-maven-plugin</artifactId>
+                        <version>5.4</version>
+                        <configuration>
+                            <chartDirectory>${project.basedir}/src/helm/chart/yncrea-hellomicro</chartDirectory>
+                            <chartVersion>${project.version}</chartVersion>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <!-- This is the related section to use local binary with auto-detection enabled. -->
+                            <useLocalHelmBinary>true</useLocalHelmBinary>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>helm-lint</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>lint</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>helm-package</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>package</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+        		</plugins>
+        	</build>
+        ````
+
+1. Finally use a third plugin : `exec-maven-plugin` in order to (in the maven `install` phase):
+    
+    - Delete the fixed-name release `silly-unicorn` if it exists.
+    - Deploy the new release with the same name, of the Chart we just built 
+    
+        ??? example "Solution"
+            ````xml linenums="1" hl_lines="1 22 24"
+            	<build>
+            		<plugins>
+            		    ...
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>exec-maven-plugin</artifactId>
+                            <version>${exec-maven-plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>exec-helm-delete</id>
+                                    <phase>package</phase>
+                                    <configuration>
+                                        <executable>helm</executable>
+                                        <commandlineArgs>delete silly-unicorn --purge</commandlineArgs>
+                                        <successCodes>
+                                            <successCode>0</successCode>
+                                            <successCode>1</successCode>
+                                        </successCodes>
+                                    </configuration>
+                                    <goals>
+                                        <goal>exec</goal>
+                                    </goals>
+                                </execution>
+                                <execution>
+                                    <id>exec-helm-install</id>
+                                    <phase>pre-integration-test</phase>
+                                    <configuration>
+                                        <executable>helm</executable>
+                                        <commandlineArgs>install ${project.build.directory}/${project.artifactId}-${project.version}.tgz --name silly-unicorn --wait --debug</commandlineArgs>
+                                    </configuration>
+                                    <goals>
+                                        <goal>exec</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+            		</plugins>
+            	</build>
+            ````
+ 
+1. Last step, test the whole Docker + Helm chart build and deploy using maven :smiley: !  
 
     ```shell
     mvn clean install
@@ -363,7 +505,10 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
     
         Example : <http://192.168.99.100:30080/hello>
 
+---
 
 ## Remote Debug
+
+In order to develop efficiently, remote debug is a must have.
 
 > TODO

@@ -11,24 +11,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloworldApplication {
 
+	@RequestMapping("/")
+	public String home() {
+		String hostname = System.getenv("HOSTNAME");
+		return "Hello Docker World - hostname : " + hostname;
+	}
+
 	@RequestMapping("/hello")
 	@ResponseBody
 	public String sayHello() {
-		return "Hello World Julien !!!";
+		return "Hello " + System.getenv("GREETING");
 	}
 
-	@RequestMapping("/")
-	public String home() {
-
-		String hostname = System.getenv("HOSTNAME");
-		return "Hello Docker World - hostname : " + hostname;
-
-	}
-
-	@RequestMapping("/health")
+	@RequestMapping("/secret")
 	@ResponseBody
-	public String health() {
-		return "I work fine, implement me !";
+	public String getSecret() {
+		String secret = System.getenv("MY_SECRET") == null ? "" : System.getenv("MY_SECRET");
+		return "Secret : " + secret;
 	}
 
 	public static void main(String[] args) {
