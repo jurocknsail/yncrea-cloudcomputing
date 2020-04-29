@@ -1,4 +1,4 @@
-# Maven Lab
+# Maven Introduction
 
 [Maven](https://maven.apache.org/what-is-maven.html) provides a simple and fast way to build and deploy applications.
 

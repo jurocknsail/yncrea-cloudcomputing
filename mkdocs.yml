@@ -3,7 +3,7 @@ nav:
   - Home: 'README.md'
   - Prerequisites: prerequisites.md
   - SpringBoot Lab: javaspringboot.md
-  - Maven Lab: maven.md
+  - Maven Introduction: maven.md
   - Docker Lab: docker.md
   - Kubernetes Lab: kubernetes.md
   - Getting Started on Github: github.md
