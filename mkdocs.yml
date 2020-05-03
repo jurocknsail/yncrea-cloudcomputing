@@ -1,18 +1,32 @@
 site_name: 'Yncrea - Intro to Cloud Computing Course'
+
+# Repository
+repo_name: yncrea-cloudcomputing
+repo_url: https://github.com/jurocknsail/yncrea-cloudcomputing
+edit_uri: ""
+site_description: >-
+  This training material is part of ITII 3 - Cloud Computing Course for YNCREA Toulon.
+  The course takes place over two days and intends to give students
+  an overview of all technologies that are evolving around Continuous Integration and Delivery
+  with a special focus on "Cloud" technologies.
+
 nav:
-  - Home: 'README.md'
-  - Prerequisites: prerequisites.md
-  - SpringBoot Lab: javaspringboot.md
-  - Getting Started with Maven: maven.md
-  - Docker Lab: docker.md
-  - Kubernetes Lab: kubernetes.md
-  - Getting Started with Github: github.md
-  - Github Actions Lab - CI: github-actions.md
-  - AWS Lab: aws.md
-  - CloudFormation with Github Actions - CD: cloudformation.md
-  - Deploy Containers with ECS: ecs.md
-  - Cloudformation Linting: cfn-nag.md
-  - EKS Setup: eks.md
+  - Home: README.md
+  - Day#1:
+    - Prerequisites: prerequisites.md
+    - SpringBoot Lab: javaspringboot.md
+    - Getting Started with Maven: maven.md
+    - Docker Lab: docker.md
+    - Kubernetes Lab: kubernetes.md
+    - Getting Started with Github: github.md
+    - Github Actions Lab - CI: github-actions.md
+  - Day#2:
+    - AWS Lab: aws.md
+    - CloudFormation with Github Actions - CD: cloudformation.md
+    - Deploy Containers with ECS: ecs.md
+    - Cloudformation Linting: cfn-nag.md
+    - EKS Setup: eks.md
+
 theme:
   name: 'material'
   logo: files/yncrea.png
@@ -20,6 +34,10 @@ theme:
   palette:
     primary: blue
     accent: blue
+  features:
+    - tabs
+    - instant
+
 markdown_extensions:
   - codehilite:
       linenums: true
@@ -43,3 +61,18 @@ markdown_extensions:
   - pymdownx.tabbed
   - pymdownx.tilde
 copyright: '&copy; 2020 Julien Berger'
+
+# Customization
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/jurocknsail
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/repository/docker/jurocknsail/yncrea-hellomicro
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/julien-berger-0a9671154/
+
+# Google Analytics
+google_analytics:
+  - !!python/object/apply:os.getenv ["GOOGLE_ANALYTICS_KEY"]
+  - auto
