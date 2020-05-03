@@ -447,7 +447,7 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
                 </build>
             ````
 
-1. Finally use a third plugin : `exec-maven-plugin` in order to (in the maven `install` phase):
+1. Finally use a third plugin : `exec-maven-plugin` in order to (in the maven `pre-integration-test` phase):
     
     - Delete the fixed-name release `silly-unicorn` if it exists.
     - Deploy the new release with the same name, of the Chart we just built 
@@ -464,7 +464,7 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
                             <executions>
                                 <execution>
                                     <id>exec-helm-delete</id>
-                                    <phase>package</phase>
+                                    <phase>pre-integration-test</phase>
                                     <configuration>
                                         <executable>helm</executable>
                                         <commandlineArgs>delete silly-unicorn --purge</commandlineArgs>

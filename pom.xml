@@ -83,14 +83,14 @@
 				<executions>
 					<execution>
 						<id>docker-build</id>
-						<phase>package</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>build</goal>
 						</goals>
 					</execution>
 					<execution>
 						<id>docker-save</id>
-						<phase>package</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>save</goal>
 						</goals>
@@ -132,10 +132,10 @@
 				<executions>
 					<execution>
 						<id>exec-helm-delete</id>
-						<phase>package</phase>
+						<phase>pre-integration-test</phase>
 						<configuration>
 							<executable>helm</executable>
-							<commandlineArgs>delete silly-unicorn</commandlineArgs>
+							<commandlineArgs>delete silly-unicorn --purge</commandlineArgs>
 							<successCodes>
 								<successCode>0</successCode>
 								<successCode>1</successCode>

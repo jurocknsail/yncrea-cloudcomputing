@@ -109,7 +109,7 @@ Then, we are 100% sure that running that way, it will be fine on ANY system !
         				<executions>
         					<execution>
         						<id>docker-build</id>
-        						<phase>package</phase>
+        						<phase>pre-integration-test</phase>
         						<goals>
         							<goal>build</goal>
         						</goals>
@@ -123,7 +123,7 @@ Then, we are 100% sure that running that way, it will be fine on ANY system !
     !!! tip
         You can even use the {=="save" goal==} of the plugin in a new {==execution==}, in order to save the image as a tar file locally.
         
-        All this, during the {==maven "package"==} phase :muscle: !  
+        All this, during the {==maven "pre-integration-test"==} phase :muscle: !  
         
 1. **Verify**.
    
