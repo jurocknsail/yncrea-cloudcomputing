@@ -43,9 +43,32 @@ In this chapter, we'll explain you how to connect with the AWS CLI to your AWS A
 
         aws ec2 describe-instances
 
+    !!! tip
+        If you already have other AWS Profiles configured, name them in brackets :
+        ````
+        [default]
+        aws_access_key_id = ...
+        aws_secret_access_key = ...
+
+        [other_profile]
+        aws_access_key_id = ...
+        aws_secret_access_key = ...        
+        ````
+        And then add the `--profile <profile_name>` to each `aws` commands
+
+---
+
+## VPC
+
+A VPC means Virtual Private Cloud.  
+This is what AWS provide us, and we will work inside our own VPC for the rest of this course.
+
 ---
 
 ## CloudFormation
+
+AWS [CloudFormation](https://aws.amazon.com/cloudformation/?nc1=h_ls) is a YAML based language dedicated to IaC.  
+It helps declaring {==ressources==} to define an architecture.
 
 Let's now deploy your first resource in the development account. 
 Download the following file to your "CloudComputing" folder:  
@@ -69,15 +92,25 @@ This file deploys a single EC2 instance.
 
 ## Follow up exercise
 
-1. Modify the CloudFormation template in order to add a [Security Group](https://docs.aws.amazon.com/de_de/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html) which allows access on Port 443 to your EC2 instance.
+Modify the CloudFormation template in order to add a [Security Group](https://docs.aws.amazon.com/fr_fr/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html) which allows access on Port 443 to your EC2 instance.
+You can check the result in by verifying the new instance description in the EC2 view.
 
+!!! tip
+    Don't forget to also checkout the [EC2 CF Docs](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance.html#cfn-ec2-instance-securitygroups) to know how to assigne the newly SG to the EC2 !
+
+!!! info
+    Note that AWS CloudFormation service won't recreate the full stack (if you use the same stack name ofc), but only add the necessary ressources.  
+    The feature is called [Stack Update](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks.html).    
+    It is also smart enough to **restart** the instance {==only if needed !==}  
+    (Which is the case here)
+    
 ---
 
 ## Troposphere
 
 Another way to generate CloudFormation templates is to use a framework for a programming language. 
 
-One famous example is Troposphere, a Python Framework.  
+One famous example is [Troposphere](https://github.com/cloudtools/troposphere), a Python Framework.  
 
 !!! info
     The advantage of using a framework over bare CloudFormation is that you can use logic, conditions and loops when defining your infrastructure, so in short, it gives more flexibility when building it.  
@@ -93,6 +126,10 @@ After you understood the logic of the file, let's deploy it now.
 1. Generate CloudFormation from the Python script:  
 
         python ec2_instance.py > ec2_instance.yml
+        
+    !!! warning
+        You may need to install python depency : troposphere  
+        `pip install troposphere`
 
 1. Deploy the CloudFormation stack:   
 
@@ -105,5 +142,10 @@ After you understood the logic of the file, let's deploy it now.
 
 ## Follow up exercise
 
-Package the EC2 Instance in a Launch Configuration that is referenced by an Auto Scaling Group. You can find an example [here](https://github.com/cloudtools/troposphere/blob/master/troposphere/autoscaling.py).  
-Deploy this template and verify that that your EC2 instance is backed by an Autoscaling group (have a look at the instance tags).
+Start from the `ec2_instance.py` file created before and :
+- Add the Security Group created before in CF, but this time using Troposphere.
+- Package the EC2 Instance in a Launch Configuration that is referenced by an Auto Scaling Group. You can find an example [here](https://github.com/cloudtools/troposphere/blob/master/examples/Autoscaling.py).  
+- Add ythe necessary ressources from the template above to `ec2_instance.py`.
+- Generate the yaml from the TS Template `ec2_instance.py`.
+- Deploy it.   
+- Verify that that your EC2 instance is backed by an Autoscaling group (have a look at the instance tags).

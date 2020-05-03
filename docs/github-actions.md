@@ -1,4 +1,4 @@
-# Github Actions Lab
+# Github Actions Lab - CI
 
 The goal of this exercise is to show you how to create a **CI/CD Pipeline** for containerized applications.  
 For this Lab, we will use the automation platform of Github, called *[Github Actions](https://help.github.com/en/actions/getting-started-with-github-actions)*.

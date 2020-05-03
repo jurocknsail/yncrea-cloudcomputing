@@ -7,9 +7,9 @@ nav:
   - Docker Lab: docker.md
   - Kubernetes Lab: kubernetes.md
   - Getting Started with Github: github.md
-  - Github Actions Lab: github-actions.md
-  - Getting Started with AWS: aws.md
-  - CloudFormation Deployment: cloudformation.md
+  - Github Actions Lab - CI: github-actions.md
+  - AWS Lab: aws.md
+  - CloudFormation with Github Actions - CD: cloudformation.md
   - Deploy Containers with ECS: ecs.md
   - Cloudformation Linting: cfn-nag.md
   - EKS Setup: eks.md

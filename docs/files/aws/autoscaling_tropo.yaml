@@ -1,0 +1,74 @@
+Description: Configures autoscaling group for api app
+Mappings:
+  RegionMap:
+    eu-west-1:
+      AMI: ami-0f62aafc6efe8fd7b
+    us-east-1:
+      AMI: ami-00b882ac5193044e4
+Parameters:
+  AmiId:
+    Default: ami-00b882ac5193044e4
+    Description: The AMI id for the api instances
+    Type: String
+  ScaleCapacity:
+    Default: '3'
+    Description: Number of api servers to run
+    Type: String
+  SecurityGroup:
+    Default: my-ingress-group
+    Description: Security group name.
+    Type: String
+Resources:
+  AutoscalingGroup:
+    Properties:
+      AvailabilityZones:
+        - us-east-1a
+        - us-east-1b
+      DesiredCapacity: !Ref 'ScaleCapacity'
+      HealthCheckType: EC2
+      LaunchConfigurationName: !Ref 'LaunchConfiguration'
+      MaxSize: !Ref 'ScaleCapacity'
+      MinSize: 1
+      Tags:
+        - Key: Environment
+          PropagateAtLaunch: true
+          Value: test
+    Type: AWS::AutoScaling::AutoScalingGroup
+    UpdatePolicy:
+      AutoScalingReplacingUpdate:
+        WillReplace: 'true'
+      AutoScalingRollingUpdate:
+        MaxBatchSize: '1'
+        MinInstancesInService: '1'
+        PauseTime: PT5M
+        WaitOnResourceSignals: 'true'
+  Ec2Instance:
+    DependsOn: InstanceSecurityGroup
+    Properties:
+      ImageId: !FindInMap
+        - RegionMap
+        - !Ref 'AWS::Region'
+        - AMI
+      InstanceType: t1.micro
+      SecurityGroups:
+        - !Ref 'SecurityGroup'
+    Type: AWS::AutoScaling::LaunchConfiguration
+  InstanceSecurityGroup:
+    Properties:
+      GroupDescription: Enable 443 inbound port
+      GroupName: !Ref 'SecurityGroup'
+      SecurityGroupIngress:
+        - CidrIp: '0.0.0.0/0'
+          FromPort: '443'
+          IpProtocol: tcp
+          ToPort: '443'
+    Type: AWS::EC2::SecurityGroup
+  LaunchConfiguration:
+    DependsOn: InstanceSecurityGroup
+    Properties:
+      ImageId: !Ref 'AmiId'
+      InstanceType: t1.micro
+      SecurityGroups:
+        - !Ref 'SecurityGroup'
+    Type: AWS::AutoScaling::LaunchConfiguration
+
