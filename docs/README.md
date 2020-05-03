@@ -1,3 +1,5 @@
+![CI/CD](https://github.com/jurocknsail/yncrea-cloudcomputing/workflows/CI/CD/badge.svg)
+
 # Introduction
 
 This training material is part of **_ITII 3 - Cloud Computing Course_** for **YNCREA Toulon**.

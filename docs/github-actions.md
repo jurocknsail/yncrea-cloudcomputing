@@ -65,8 +65,8 @@ Let's simply use an [existing action provided by DockerHub](https://www.docker.c
 - Login to dockerhub and create a repository for your image : 
 `<your_docker_id>/cloudcomputing`   
 - Update the file `build.yaml` again.
-- Use the Github Action provided by Docker (mentioned above)
-- Push your image with a unique tag to hub.docker.com (use the GITHUB_SHA environment variable)
+- Use the Github Action provided by Docker ([github link](https://github.com/marketplace/actions/build-and-push-docker-images))
+- Push your image with a unique tag to *hub.docker.com* (use the GITHUB_SHA environment variable)
     
     !!! warning
         Don't forget to create your DockerHub credentials as [Github Secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets) in your repo settings !!!
