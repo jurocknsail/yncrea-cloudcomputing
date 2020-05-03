@@ -29,3 +29,8 @@ jobs:
           repository: jurocknsail/yncrea-hellomicro
           tag_with_ref: true
           tag_with_sha: true
+
+      - name: Deploy docs
+        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        env:
+          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
