@@ -18,7 +18,5 @@ jobs:
         with:
           java-version: 1.8
 
-
       - name: Maven Clean & Tests
-        env:
         run: mvn -B clean test --file pom.xml
