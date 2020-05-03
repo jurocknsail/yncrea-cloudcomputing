@@ -18,8 +18,8 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Maven Clean & Tests
-        run: mvn -B clean test --file pom.xml
+      - name: Maven Clean, Test & Package
+        run: mvn -B clean package --file pom.xml
 
       - name: Docker Build & Push
         uses: docker/build-push-action@v1

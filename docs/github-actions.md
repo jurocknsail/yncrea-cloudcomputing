@@ -31,7 +31,7 @@ First, let's create a basic action, doing a simple Echo from Mona, the Octocat.
 
 ---
 
-## Compile & Test the Code
+## Compile, Test & Package the Code
 
 Since we already did the job in maven, the easiest is to reuse this in an `ubuntu` based action with Java enabled, and some `mvn` {==steps==}.
 
