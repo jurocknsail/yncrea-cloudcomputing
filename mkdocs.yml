@@ -3,12 +3,11 @@ nav:
   - Home: 'README.md'
   - Prerequisites: prerequisites.md
   - SpringBoot Lab: javaspringboot.md
-  - Maven Introduction: maven.md
+  - Getting Started with Maven: maven.md
   - Docker Lab: docker.md
   - Kubernetes Lab: kubernetes.md
-  - Getting Started on Github: github.md
-  - Github Actions: github-actions.md
-  - CI with Github Actions and Docker: dockerhub.md
+  - Getting Started with Github: github.md
+  - Github Actions Lab: github-actions.md
   - Getting Started with AWS: aws.md
   - Cloudformation Deployment: cloudformation.md
   - Deploy Containers with ECS: ecs.md

@@ -8,12 +8,11 @@ The course takes place over two days and intends to give students an overview of
 
 1. [Prerequisites](./prerequisites.md)
 1. [SpringBoot Lab](./javaspringboot.md)
-1. [Maven Lab](./maven.md)
+1. [Getting Started with Maven](./maven.md)
 1. [Docker Lab](./docker.md)
 1. [Kubernetes Lab](./kubernetes.md)
-1. [Getting Started on Github](./github.md)
-1. [Github Actions](./github-actions.md)
-1. [CI with Github Actions and Docker Hub](./dockerhub.md)
+1. [Getting Started with Github](./github.md)
+1. [Github Actions Lab](./github-actions.md)
 
 ## Day 2
 

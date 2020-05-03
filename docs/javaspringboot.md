@@ -26,7 +26,7 @@ The goal here is to create a sample micro service coded in [Java Spring Boot](ht
         
         as below :
     
-        ``` java hl_lines="9 13 14 15 16 17 19 20 21 22 23 24" linenums="1"
+        ``` java hl_lines="9 13 14 15 16 17 19 20 21 22 23 24 26 27 28 29 30 31" linenums="1"
         package com.yncrea.cloudcomputing;
         
         import org.springframework.boot.SpringApplication;
@@ -40,7 +40,7 @@ The goal here is to create a sample micro service coded in [Java Spring Boot](ht
         public class CloudcomputingApplication {
         
             @RequestMapping("/")
-            public String home() {    
+            public String home() {
                 String hostname = System.getenv("HOSTNAME");
                 return "Hello Docker World - hostname : " + hostname;
             }
@@ -49,6 +49,13 @@ The goal here is to create a sample micro service coded in [Java Spring Boot](ht
             @ResponseBody
             public String sayHello() {
                 return "Hello " + System.getenv("GREETING");
+            }
+        
+            @RequestMapping("/secret")
+            @ResponseBody
+            public String getSecret() {
+                String secret = System.getenv("MY_SECRET") == null ? "" : System.getenv("MY_SECRET");
+                return "Secret : " + secret;
             }
         
             public static void main(String[] args) {

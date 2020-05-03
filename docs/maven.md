@@ -1,4 +1,4 @@
-# Maven Introduction
+# Getting Started with Maven
 
 [Maven](https://maven.apache.org/what-is-maven.html) provides a simple and fast way to build and deploy applications.
 
