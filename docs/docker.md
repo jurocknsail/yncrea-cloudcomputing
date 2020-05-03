@@ -17,8 +17,7 @@ Then, we are 100% sure that running that way, it will be fine on ANY system !
 
 1. **Create the [Dockerfile](https://docs.docker.com/engine/reference/builder/)**
 
-    - First, let's create a folder `src/docker` to store our `Dockerfile` : the kind of descriptor used to build the image.
-    - Create the file named *Dockerfile* in the directory you just created, containing :
+    - Create the file named `Dockerfile` in the **root directory** of your project, containing :
     
            ````dockerfile linenums="1"
            FROM java:8
@@ -45,7 +44,7 @@ Then, we are 100% sure that running that way, it will be fine on ANY system !
 
 1. **Build the docker image** manually
     ```shell
-    docker build -t test/cloudcomputing:latest -f src/docker/Dockerfile .
+    docker build -t <your_docker_id>/yncrea-hellomicro:latest .
     ```
 
     It will generate the docker image for the micro service and make it available in the local docker registry.
@@ -104,11 +103,6 @@ Then, we are 100% sure that running that way, it will be fine on ANY system !
         					<images>
         						<image>
         							<name>[your_docker_id]/yncrea-hellomicro</name>
-        							<alias>dockerfile</alias>
-        							<build>
-        								<contextDir>${project.basedir}</contextDir>
-        								<dockerFile>${project.basedir}/src/docker/Dockerfile</dockerFile>
-        							</build>
         						</image>
         					</images>
         				</configuration>

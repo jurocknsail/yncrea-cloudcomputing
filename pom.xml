@@ -76,11 +76,6 @@
 					<images>
 						<image>
 							<name>jurocknsail/yncrea-hellomicro</name>
-							<alias>dockerfile</alias>
-							<build>
-								<contextDir>${project.basedir}</contextDir>
-								<dockerFile>${project.basedir}/src/docker/Dockerfile</dockerFile>
-							</build>
 						</image>
 					</images>
 					<skipSave>true</skipSave>
