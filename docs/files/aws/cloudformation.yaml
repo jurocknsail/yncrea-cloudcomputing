@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'CloudFormation Skeleton'
+Metadata:
+  Instances:
+    Description: "The Metadata block is entirely optional."
+Parameters: 
+  InstanceTypeParameter: 
+    Type: String
+    Default: t2.micro
+    AllowedValues: 
+      - t2.micro
+      - m5.large
+    Description: Enter t2.micro or m5.large. Default is t2.micro.
+Mappings: 
+  RegionMap: 
+    us-east-1: 
+      "HVM64": "ami-00b882ac5193044e4"
+    eu-west-1: 
+      "HVM64": "ami-0f62aafc6efe8fd7b"
+#Conditions: 
+Resources: 
+  EC2Instance: 
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", HVM64]
+      InstanceType: !Ref InstanceTypeParameter
+
+Outputs:
+  InstanceID:
+    Description: "The Instance ID"
+    Value: !Ref EC2Instance

@@ -71,6 +71,11 @@ Let's simply use an [existing action provided by DockerHub](https://www.docker.c
     !!! warning
         Don't forget to create your DockerHub credentials as [Github Secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets) in your repo settings !!!
 
+- Check your image has been pushed to your DockerHub Account Registry.
+
+    !!! success
+        Congratulation, your Docker image is ready to be used by anybody !
+    
 ---
 
 ## Followup Exercise
