@@ -37,8 +37,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Deploy IaC
-        run: aws cloudformation deploy --template-file src/infra/autoscaling_tropo.yaml --stack-name infra-stack
+#      - name: Deploy IaC
+#        run: aws cloudformation deploy --template-file src/infra/autoscaling_tropo.yaml --stack-name infra-stack
 
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master

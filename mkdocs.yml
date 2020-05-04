@@ -42,7 +42,7 @@ theme:
   features:
     - tabs
     - instant
-  custom_dir: docs
+  custom_dir: material
 
 markdown_extensions:
   - codehilite:
