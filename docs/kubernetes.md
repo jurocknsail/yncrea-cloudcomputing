@@ -286,7 +286,7 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
     
     - In the `Chart` folder (`src/helm/chart/yncrea-hellomicro`), download and put :
         -   [Chart.yaml](./files/kubernetes/Chart.yaml)
-        -   [values.yaml](./files/kubernetes.values.yaml)
+        -   [values.yaml](./files/kubernetes/values.yaml)
         
         !!! info
             `Chart.yaml` is the declaration of your Chart

@@ -6,12 +6,13 @@ repo_url: https://github.com/jurocknsail/yncrea-cloudcomputing
 edit_uri: ""
 site_description: >-
   This training material is part of ITII 3 - Cloud Computing Course for YNCREA Toulon.
+  <br><br>
   The course takes place over two days and intends to give students
   an overview of all technologies that are evolving around Continuous Integration and Delivery
   with a special focus on "Cloud" technologies.
 
 nav:
-  - Home: README.md
+  - Home: index.md
   - Day#1:
     - Prerequisites: prerequisites.md
     - SpringBoot Lab: javaspringboot.md
@@ -28,15 +29,20 @@ nav:
     - EKS Setup: eks.md
 
 theme:
+  language: en
   name: 'material'
   logo: files/yncrea.png
   favicon: files/yncrea.png
   palette:
     primary: blue
     accent: blue
+  font:
+    text: Roboto
+    code: Roboto Mono
   features:
     - tabs
     - instant
+  custom_dir: docs
 
 markdown_extensions:
   - codehilite:
