@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: A simple task definition to deploy inside our ECS Cluster
+
+Parameters:
+  ImageName:
+    Description: The name of the image to be deployed
+    Type: String
+
+Resources: 
+  taskdefinition: 
+    Type: AWS::ECS::TaskDefinition
+    Properties: 
+      ContainerDefinitions: 
+        - 
+          Name: "HelloWorld"
+          Image: 
+            Ref: ImageName
+          Cpu: "10"
+          Memory: "200"
+          PortMappings: 
+            - 
+              ContainerPort: 3000
+              HostPort: 0
+  WebApp: 
+    Type: AWS::ECS::Service
+    Properties: 
+      Cluster: "ecscluster"
+      DesiredCount: 1
+      TaskDefinition: 
+        Ref: "taskdefinition"
