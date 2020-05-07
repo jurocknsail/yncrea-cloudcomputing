@@ -145,7 +145,7 @@ After you understood the logic of the file, let's deploy it now.
 Start from the `ec2_instance.py` file created before and :
 - Add the Security Group created before in CF, but this time using Troposphere.
 - Package the EC2 Instance in a Launch Configuration that is referenced by an Auto Scaling Group. You can find an example [here](https://github.com/cloudtools/troposphere/blob/master/examples/Autoscaling.py).  
-- Add ythe necessary ressources from the template above to `ec2_instance.py`.
+- Add the necessary ressources from the template above to `ec2_instance.py`.
 - Generate the yaml from the TS Template `ec2_instance.py`.
 - Deploy it.   
 - Verify that that your EC2 instance is backed by an Autoscaling group (have a look at the instance tags).
