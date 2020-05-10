@@ -1,14 +1,41 @@
 # Deploy Containers with ECS
 
-The goal of this exercise is to deploy your previously built Docker image automatically to the AWS container service : ECS.
+The goal of this exercise is to deploy your previously built Docker image automatically to the AWS Elastic Container Service : [ECS](https://aws.amazon.com/ecs/?nc1=h_ls).  
 
-- First, deploy an ECS cluster with CloudFormation from the following file: 
+This diagram shows how ECS works :
+![ECS](./files/aws/aws-ecs.JPG "ECS")
+
+---
+
+- First, deploy an ECS cluster with CloudFormation from the following template (and add it to your repo): 
     - [ecs-cluster.yaml](./files/aws/ecs-cluster.yaml)
-    - Choose the default security group, VPC and all subnets
+    - Choose the default security group, VPC and 2 Subnets.
+       
+        !!! tip
+            You can find these info in the AWS console : **EC2** & **VPC** parts.   
+            Parameters can be passed to the CF Stack using the `--parameter-overrides` option.   
+            You may also need to use `--capabilities CAPABILITY_NAMED_IAM` in order to allow the stack to create the roles.
 
-- Add the following file to your repository
+- Add the following file to your repository.
     - [ecs-task.yaml](./files/aws/ecs-task.yaml)
+    
 
-- Extend your Github flow with the following lines:
+- Use the [TaskDefinition](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html) to deploy your docker image in ECS
 
-        aws cloudformation deploy --template-file ecs-task.yaml --stack-name ecs-task --parameter-overrides ImageName=docker.io/<your-docker-username>/ssc:sha-$(git rev-parse --short HEAD) --no-fail-on-empty-changeset
+        aws cloudformation deploy --template-file ecs-task.yaml --stack-name ecs-task --parameter-overrides ImageName=docker.io/<your-docker-id>/yncrea-hellomicro:sha-$(git rev-parse --short HEAD) --no-fail-on-empty-changeset
+        
+
+- Use a web browser and try to access your ELB public URI on port 8080 !
+
+    !!! tip
+        You can find the URI by browsing the AWS Console to EC2 Service > LoadBalancers > YourLB > Description > **DNS Name**
+
+    !!! success
+        Congratulation, you deployed your Docker image in ECS and can access your API through the Web !
+   
+---
+     
+- Extend your Github flow accordingly.
+
+    !!! success
+        Congratulation, you are now able to Continuously Deliver Docker images !

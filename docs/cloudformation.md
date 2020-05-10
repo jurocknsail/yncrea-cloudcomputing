@@ -13,7 +13,9 @@ Example `src/infra`
 
     !!! note
         If you did followup exercise to create the EC2 instance backed with the AutoScaling group, you can use the generated yaml instead.
-    
+
+---
+
 - Extend your Github Workflow to deploy your stack automatically.  
     The most flexible way is to use the embedded `aws cli` inside the ubuntu image running our actions.
     
