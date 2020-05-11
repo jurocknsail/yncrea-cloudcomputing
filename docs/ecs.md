@@ -9,7 +9,7 @@ This diagram shows how ECS works :
 
 - First, deploy an ECS cluster with CloudFormation from the following template (and add it to your repo): 
     - [ecs-cluster.yaml](./files/aws/ecs-cluster.yaml)
-    - Choose the default security group, VPC and 2 Subnets.
+    - Choose the default Security Group, VPC and 2 Subnets.
        
         !!! tip
             You can find these info in the AWS console : **EC2** & **VPC** parts.   
@@ -45,11 +45,14 @@ This diagram shows how ECS works :
 
 ## Followup Exercise
 
-Checkout the two links below and modifiy your ECS cluster to be backed up by a Public Load Balancer & target Group :
+Checkout the two links below and modifiy your ECS cluster to be backed up by a Public Load Balancer & Target Group :
 
 - [Cluster with LB](https://github.com/awslabs/aws-cloudformation-templates/blob/master/aws/services/ECS/EC2LaunchType/clusters/public-vpc.yml)
 - [Service](https://github.com/awslabs/aws-cloudformation-templates/blob/master/aws/services/ECS/EC2LaunchType/services/public-service.yml)
 
-    !!! warning
-        Be careful to update the templates to uses your existing VPC, Subnets, Security Groups etc ... instead of creating new ones as they do in the templates !  
-        Also, you need to add a LoadBalancer Listener & Rule on port 8080 to redirect calls to our micro service to the right target group.
+Verify all is working fine by going to you Public Load Balancer URL (Public DNS Name) on port 8080.
+
+!!! warning
+    Be careful to update the templates to uses your **existing VPC, Subnets, Security Groups** etc ... instead of creating new ones as they do in the template !  
+    
+    Also, you need to add a LoadBalancer **Listener & Rule** on port 8080 to redirect calls to our micro service to the right **Target Group**.
