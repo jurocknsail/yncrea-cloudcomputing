@@ -46,8 +46,10 @@ This diagram shows how ECS works :
 ## Followup Exercise
 
 Checkout the two links below and modifiy your ECS cluster to be backed up by a Public Load Balancer & target Group :
+
 - [Cluster with LB](https://github.com/awslabs/aws-cloudformation-templates/blob/master/aws/services/ECS/EC2LaunchType/clusters/public-vpc.yml)
 - [Service](https://github.com/awslabs/aws-cloudformation-templates/blob/master/aws/services/ECS/EC2LaunchType/services/public-service.yml)
 
     !!! warning
-        Be carefull to update the templates to uses your existing VPC, Security Groups etc ... instead of creating new ones as they do in the templates !
+        Be careful to update the templates to uses your existing VPC, Subnets, Security Groups etc ... instead of creating new ones as they do in the templates !  
+        Also, you need to add a LoadBalancer Listener & Rule on port 8080 to redirect calls to our micro service to the right target group.

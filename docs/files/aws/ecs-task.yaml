@@ -41,19 +41,6 @@ Conditions:
 
 Resources:
 
-  ## Add ingress to Security Group for micro service port
-  SecurityGroupIngress:
-    Type: AWS::EC2::SecurityGroupIngress
-    Properties:
-      Description: Ingress for the micro service port
-      IpProtocol: tcp
-      FromPort: !Ref ContainerPort
-      ToPort: !Ref ContainerPort
-      CidrIp: 0.0.0.0/0
-      GroupId:
-        Fn::ImportValue:
-          !Join [':', [!Ref 'StackName', 'SecurityGroup']]
-
   # The task definition. This is a simple metadata description of what
   # container to run, and what resource requirements it has.
   TaskDefinition:
@@ -91,3 +78,16 @@ Resources:
         MinimumHealthyPercent: 75
       DesiredCount: !Ref 'DesiredCount'
       TaskDefinition: !Ref 'TaskDefinition'
+
+  ## Add ingress to Security Group for micro service port
+  SecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress for the micro service port
+      IpProtocol: tcp
+      FromPort: !Ref ContainerPort
+      ToPort: !Ref ContainerPort
+      CidrIp: 0.0.0.0/0
+      GroupId:
+        Fn::ImportValue:
+          !Join [':', [!Ref 'StackName', 'SecurityGroup']]

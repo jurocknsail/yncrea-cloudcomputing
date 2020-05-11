@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Deploy a service into an ECS cluster.
+Description: Deploy a service into an ECS cluster behind a public load balancer.
 Parameters:
   StackName:
     Type: String
@@ -26,6 +26,18 @@ Parameters:
     Type: Number
     Default: 200
     Description: How much memory in megabytes to give the container
+  Path:
+    Type: String
+    Default: "*"
+    Description: A path on the public load balancer that this service
+      should be connected to. Use * to send all load balancer
+      traffic to this service.
+  Priority:
+    Type: Number
+    Default: 1
+    Description: The priority for the routing rule added to the load balancer.
+      This only applies if your have multiple services which have been
+      assigned to different paths on the load balancer.
   DesiredCount:
     Type: Number
     Default: 1
@@ -68,6 +80,7 @@ Resources:
   # as monitor the number of running tasks and replace any that have crashed
   Service:
     Type: AWS::ECS::Service
+    DependsOn: LoadBalancerRule
     Properties:
       ServiceName: !Ref 'ServiceName'
       Cluster:
@@ -78,8 +91,12 @@ Resources:
         MinimumHealthyPercent: 75
       DesiredCount: !Ref 'DesiredCount'
       TaskDefinition: !Ref 'TaskDefinition'
+      LoadBalancers:
+        - ContainerName: !Ref 'ServiceName'
+          ContainerPort: !Ref 'ContainerPort'
+          TargetGroupArn: !Ref 'TargetGroup'
 
-  ## Add ingress to Security Group for micro service port
+  ## Add ingress to EC2 Security Group for micro service port
   SecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -90,4 +107,48 @@ Resources:
       CidrIp: 0.0.0.0/0
       GroupId:
         Fn::ImportValue:
-          !Join [':', [!Ref 'StackName', 'SecurityGroup']]
+          !Join [':', [!Ref 'StackName', 'EcsHostSecurityGroup']]
+
+  # A target group. This is used for keeping track of all the tasks, and
+  # what IP addresses / port numbers they have. You can query it yourself,
+  # to use the addresses yourself, but most often this target group is just
+  # connected to an application load balancer, or network load balancer, so
+  # it can automatically distribute traffic across all the targets.
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    DependsOn: SecurityGroupIngress
+    Properties:
+      Name: !Ref 'ServiceName'
+      Port: !Ref 'ContainerPort'
+      Protocol: HTTP
+      VpcId:
+        Fn::ImportValue:
+          !Join [':', [!Ref 'StackName', 'VPCId']]
+
+  # Listener on service port for the Public Load Balancer
+  PublicLoadBalancerListenerForService:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn: TargetGroup
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref 'TargetGroup'
+          Type: 'forward'
+      LoadBalancerArn:
+        Fn::ImportValue:
+          !Join [':', [!Ref 'StackName', 'PublicLoadBalancer']]
+      Port: !Ref 'ContainerPort'
+      Protocol: HTTP
+
+  # Create a rule on the load balancer for routing traffic to the target group
+  LoadBalancerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    DependsOn: PublicLoadBalancerListenerForService
+    Properties:
+      Actions:
+        - TargetGroupArn: !Ref 'TargetGroup'
+          Type: 'forward'
+      Conditions:
+        - Field: path-pattern
+          Values: [!Ref 'Path']
+      ListenerArn: !Ref 'PublicLoadBalancerListenerForService'
+      Priority: !Ref 'Priority'
