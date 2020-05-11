@@ -41,7 +41,7 @@ Conditions:
 
 Resources:
 
-  ## Add ingress to EC2 Security Group
+  ## Add ingress to Security Group for micro service port
   SecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
@@ -74,6 +74,7 @@ Resources:
           Image: !Ref 'ImageUrl'
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
+              HostPort: !Ref 'ContainerPort'
 
   # The service. The service is a resource which allows you to run multiple
   # copies of a type of task, and gather up their logs and metrics, as well
