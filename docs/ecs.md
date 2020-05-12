@@ -1,4 +1,4 @@
-# Deploy Containers with ECS
+# ECS Lab
 
 The goal of this exercise is to deploy your previously built Docker image automatically to the AWS Elastic Container Service : [ECS](https://aws.amazon.com/ecs/?nc1=h_ls).  
 

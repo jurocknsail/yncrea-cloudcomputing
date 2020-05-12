@@ -1,0 +1,16 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: isen-2
+  region: us-east-1
+
+vpc:
+  nat: 
+    gateway: Disable 
+
+nodeGroups:
+  - name: ng-1
+    ami: ami-0e5bb2367e692b807
+    instanceType: m5.large
+    desiredCapacity: 1

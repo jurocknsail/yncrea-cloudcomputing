@@ -20,6 +20,8 @@ Several tools are able to help us automatize all the steps from the source code 
     - CD can mean : Continuous **Delivery** or Continuous **Deployment**. The main difference is that Delivery means : we do not push to prod automatically.
     Here is a good sum up made by [AWS CI/CD teams](https://aws.amazon.com/devops/continuous-integration/?nc1=h_ls) 
 
+![CICD](./files/github/cicd.JPG "CI CD")
+
 ---
 
 ## Basic Action
