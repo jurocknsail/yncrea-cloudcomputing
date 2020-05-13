@@ -511,4 +511,69 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
 
 In order to develop efficiently, remote debug is a must have.
 
-> TODO
+1. First we need to update our `Dockerfile` to bootstrap a remote debug port (8000).
+
+    ````Dockerfile hl_lines="5"
+    FROM java:8
+    EXPOSE 8080
+    ARG JAR_FILE=target/*.jar
+    COPY ${JAR_FILE} app.jar
+    ENTRYPOINT ["java", "-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n","-jar","/app.jar"]
+    ````
+   
+    !!! warning
+        Don't forget to rebuild your Docker Image and to push it again to your local registry (or DockerHub).
+       
+1. Then we need to expose this port by modifying the `deployment.yaml`
+
+    ````yaml hl_lines="6 7 8"
+        ...
+             ports:
+               - name: http
+                 containerPort: 8080
+                 protocol: TCP
+               - name: remote-debug
+                 containerPort: 8000
+                 protocol: TCP
+    ````
+   
+1. And finally create a `NodePort` in the `service.yaml` to make the debug port available from outside the K8S Cluster
+
+    !!! tip
+        A good practice is to make this `NodePort` configurable through the `values.yaml`
+        
+       ````yaml hl_lines="5"
+       #values.yaml
+       service:
+         type: NodePort
+         nodePort: 30080
+         debugNodePort: 30085
+       ````
+       
+       ````yaml hl_lines=" 8 9 10 11 12"
+        #service.yaml
+        ports:
+          - name: http
+            protocol: TCP
+            port: 80
+            targetPort: 8080
+            nodePort: {{ .Values.service.nodePort }}
+          - name: remote-debug
+            protocol: TCP
+            port: 8000
+            targetPort: 8000
+            nodePort: {{ .Values.service.debugNodePort }}
+       ````
+       
+1. We can now update your Chart with the latest docker image and changes.
+
+1. Let's create a remote debug configuration in IntelliJ Idea, targetting our remote debug NodePort :
+
+    ![Remote Debug](./files/kubernetes/rdeb.jpg "Remote Debug")
+    
+    
+1. Try run this remote debug configuration, place a breakpoint in the Java Code of the `/hello` API Method.  
+Call the REST API using your browser and observe the execution stopping at your breakpoint.
+
+    !!! success
+        Congratulation, you can now deploy Helm Charts in Kubenretes & remote debug your Java Applications !

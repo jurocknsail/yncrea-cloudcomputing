@@ -187,6 +187,8 @@ You'll need to extend your workflow with the following lines:
     
  ---
  
- ## Followup Exercise
+## Followup Exercise
  
  - Create a CF file to add the missing Application Load Balancer to your Infra, in order to access your micro service by a fixed DNS Name.
+ 
+ - Analyze the file `cf-all.yaml` used in the Cloud Formation Linting chapter. Once you understand everything, deploy it to have your first app example using a Database !

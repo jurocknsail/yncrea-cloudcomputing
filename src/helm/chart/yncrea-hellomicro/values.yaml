@@ -11,3 +11,4 @@ image:
 service:
   type: NodePort
   nodePort: 30080
+  debugNodePort: 30085
