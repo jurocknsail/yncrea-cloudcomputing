@@ -542,29 +542,29 @@ In order to develop efficiently, remote debug is a must have.
     !!! tip
         A good practice is to make this `NodePort` configurable through the `values.yaml`
         
-       ````yaml hl_lines="5"
-       #values.yaml
-       service:
-         type: NodePort
-         nodePort: 30080
-         debugNodePort: 30085
-       ````
-       
-       ````yaml hl_lines=" 8 9 10 11 12"
-        #service.yaml
-        ports:
-          - name: http
-            protocol: TCP
-            port: 80
-            targetPort: 8080
-            nodePort: {{ .Values.service.nodePort }}
-          - name: remote-debug
-            protocol: TCP
-            port: 8000
-            targetPort: 8000
-            nodePort: {{ .Values.service.debugNodePort }}
-       ````
-       
+    ````yaml hl_lines="5"
+    #values.yaml
+    service:
+      type: NodePort
+      nodePort: 30080
+      debugNodePort: 30085
+    ````
+   
+    ````yaml hl_lines="8 9 10 11 12"
+     #service.yaml
+     ports:
+       - name: http
+         protocol: TCP
+         port: 80
+         targetPort: 8080
+         nodePort: {{ .Values.service.nodePort }}
+       - name: remote-debug
+         protocol: TCP
+         port: 8000
+         targetPort: 8000
+         nodePort: {{ .Values.service.debugNodePort }}
+    ````
+ 
 1. We can now update your Chart with the latest docker image and changes.
 
 1. Let's create a remote debug configuration in IntelliJ Idea, targetting our remote debug NodePort :
