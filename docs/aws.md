@@ -5,8 +5,17 @@ In this lab, you'll learn :
 * How to connect to AWS from your workstation.
 * How to design an Infrastructure as Code (IaC) file. 
 * How to deploy this file in your Development Environment.
-* How to deliver this file through the Infrastructure Automation Pipeline to Production
 
+---
+
+## Git Repo for IaC
+
+As mentionned before, we will maintain the IaC in a separated repo.  
+Go ahead and create a new **Git Repo** as done before, this time named `yncrea-cloudcomputing-iac`.
+
+!!! info
+    From now on, all the IaC files will be pushed to this repo.  
+    This way we can {==separate the automation of **infra** deployment and **microservices** deployments==}.
 ---
 
 ## Connect to AWS Educate
@@ -71,7 +80,7 @@ AWS [CloudFormation](https://aws.amazon.com/cloudformation/?nc1=h_ls) is a YAML 
 It helps declaring {==ressources==} to define an architecture.
 
 Let's now deploy your first resource in the development account. 
-Download the following file to your "CloudComputing" folder:  
+Download the following file to your *IaC Git Repo* in `src/infra` folder.
 
 - [cloudformation.yaml](./files/aws/cloudformation.yaml)  
 

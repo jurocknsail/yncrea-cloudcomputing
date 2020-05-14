@@ -10,14 +10,20 @@ For this course, we are using *Github* as our platform.
 
 1. Sign Up to Github.com
 1. Install git on your workstation (with any package manager or from their [website](https://git-scm.com/downloads))
-1. From the Github web interface, create a new repository with the name "cloudcomputing". 
+1. From the Github web interface, create a new repository with the name `yncrea-cloudcomputing-microservice`. 
     It will serve as the base for the following days and all changes will be stored here.
 1. Follow the [instructions](https://help.github.com/en/github/importing-your-projects-to-github/adding-an-existing-project-to-github-using-the-command-line) on how to add existing source code into your newly created repository. 
-    Perform the indicated steps at the root of your project folder.
+    Perform the indicated steps at the root of your project folder.  
+    
+    !!! info
+        A good practice is to {==**separate the micro services and the infra**==}.  
+        From now on, each micro service will have its own git repository.  
+        With the same logic, the infra as code will also have its own repo.
+        
 1. Push your source code into your repository
 
-!!! info
-    [Github Guides](https://guides.github.com/) is a good source of basic knowledge. Check it out :)
+    !!! info
+        [Github Guides](https://guides.github.com/) is a good source of basic knowledge. Check it out :)
 
 ---
 

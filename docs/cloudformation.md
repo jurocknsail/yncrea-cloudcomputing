@@ -8,13 +8,9 @@ The goal of this exercise is to automate the deployment of AWS resources once a 
 
 To achieve this:
 
-- Add the *cloudformation.yaml* file from previous lab in a new folder of your git repository.  
-Example `src/infra`
-
+- We are first going to work with the *cloudformation.yaml* file from previous lab.
     !!! note
         If you did followup exercise to create the EC2 instance backed with the AutoScaling group, you can use the generated yaml instead.
-
----
 
 - Extend your Github Workflow to deploy your stack automatically.  
     The most flexible way is to use the embedded `aws cli` inside the ubuntu image running our actions.
