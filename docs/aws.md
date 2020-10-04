@@ -44,7 +44,8 @@ In this chapter, we'll explain you how to connect with the AWS CLI to your AWS A
 
         aws configure
 
-    - Enter `us-east-1` as default region and leave the default output empty.  
+    - Press Enter to keep AWS Key / Secrets you just copied unchanged
+    - Enter `us-east-1` as default region and set the default output to 'yaml'.  
     
     This information will be stored in `%HOME%/.aws/config`.
 
@@ -152,6 +153,7 @@ After you understood the logic of the file, let's deploy it now.
 ## Follow up exercise
 
 Start from the `ec2_instance.py` file created before and :
+
 - Add the Security Group created before in CF, but this time using Troposphere.
 - Package the EC2 Instance in a Launch Configuration that is referenced by an Auto Scaling Group. You can find an example [here](https://github.com/cloudtools/troposphere/blob/master/examples/Autoscaling.py).  
 - Add the necessary ressources from the template above to `ec2_instance.py`.
