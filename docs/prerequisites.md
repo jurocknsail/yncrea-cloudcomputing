@@ -36,7 +36,7 @@ The diagram on the bottom of this page is designed to help you to understand how
     According to the instructions [here](https://chocolatey.org/install). 
     You do not have to enter your email address in the first step. 
     
-   !!! info
+    !!! info
         The following steps are for Windows users.
         Yet, you can use any other package manager on different OS : brew on Mac OS for example.
         You can also install those dependencies separately (just google it) 
@@ -52,7 +52,7 @@ The diagram on the bottom of this page is designed to help you to understand how
     choco install -y python virtualbox minikube kubernetes-cli kubernetes-helm awscli
     ```
    
-   Install Docker using Chocolatey according to your Windows Version as mentionned [here](https://stefanscherer.github.io/how-to-install-docker-the-chocolatey-way/)
+    Install Docker using Chocolatey according to your Windows Version as mentionned [here](https://stefanscherer.github.io/how-to-install-docker-the-chocolatey-way/)
    
  
 1. **Launch Minikube:**
