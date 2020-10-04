@@ -47,7 +47,7 @@ The diagram on the bottom of this page is designed to help you to understand how
     choco install -y python virtualbox minikube kubernetes-cli docker kubernetes-helm awscli
     ```
    !!! info
-        You can use use any other package manager on different OS : brew on Mac OS for example.
+        You can use any other package manager on different OS : brew on Mac OS for example.
         You can also install those dependencies separatly.
    
  
