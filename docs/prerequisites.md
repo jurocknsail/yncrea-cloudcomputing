@@ -34,21 +34,25 @@ The diagram on the bottom of this page is designed to help you to understand how
 1. **Install Chocolatey:** 
    
     According to the instructions [here](https://chocolatey.org/install). 
-    You do not have to enter your email address in the first step.  
+    You do not have to enter your email address in the first step. 
+    
+   !!! info
+        The following steps are for Windows users.
+        Yet, you can use any other package manager on different OS : brew on Mac OS for example.
+        You can also install those dependencies separately (just google it) 
 
 1. **Install needed Tools:**
 
-    Launch a terminal with Windows Administrator rights and install VirtualBox, Python, Minikube, Kubectl (the Kubernetes CLI), Helm and the Docker CLI with the help of Chocolatey:
+    Launch a terminal (CMD or PowerShell) with Windows Administrator rights and install VirtualBox, Python, Minikube, Kubectl (the Kubernetes CLI), Helm and the Docker CLI with the help of Chocolatey:
     
     !!! warning
         Please remove the items you arleady have in the command below, no need to reinstall them.
         
     ```bash 
-    choco install -y python virtualbox minikube kubernetes-cli docker kubernetes-helm awscli
+    choco install -y python virtualbox minikube kubernetes-cli kubernetes-helm awscli
     ```
-   !!! info
-        You can use any other package manager on different OS : brew on Mac OS for example.
-        You can also install those dependencies separatly.
+   
+   Install Docker using Chocolatey according to your Windows Version as mentionned [here](https://stefanscherer.github.io/how-to-install-docker-the-chocolatey-way/)
    
  
 1. **Launch Minikube:**
