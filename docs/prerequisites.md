@@ -44,8 +44,12 @@ The diagram on the bottom of this page is designed to help you to understand how
         Please remove the items you arleady have in the command below, no need to reinstall them.
         
     ```bash 
-    choco install -y python virtualbox minikube kubernetes-cli docker helm awscli
+    choco install -y python virtualbox minikube kubernetes-cli docker kubernetes-helm awscli
     ```
+   !!! info
+        You can use use any other package manager on different OS : brew on Mac OS for example.
+        You can also install those dependencies separatly.
+   
  
 1. **Launch Minikube:**
 
