@@ -43,29 +43,30 @@ The diagram on the bottom of this page is designed to help you to understand how
 
 1. **Install needed Tools:**
 
-    Launch a terminal (CMD or PowerShell) with Windows Administrator rights and install VirtualBox, Python, Minikube, Kubectl (the Kubernetes CLI), Helm and the Docker CLI with the help of Chocolatey:
+    Launch a terminal (CMD, PowerShell or GitBash etc ...) with Windows Administrator rights and install VirtualBox, Python, Minikube, Kubectl (the Kubernetes CLI), Helm and the Docker CLI with the help of Chocolatey:
     
     !!! warning
         Please remove the items you arleady have in the command below, no need to reinstall them.
-        
-    ```bash 
-    choco install -y python virtualbox minikube kubernetes-cli kubernetes-helm awscli
-    ```
    
     Install Docker using Chocolatey according to your Windows Version :
     
     - Windows 10 with Hyper-V : 
        ```bash 
-       choco install -y python virtualbox minikube kubernetes-cli kubernetes-helm awscli
+       choco install -y python awscli docker-desktop
        ```
       
     - Windows 7, 8, 10 Without Hyper-V : Use [Gokube](https://github.com/ThalesGroup/gokube)
+       ```bash
+       gokube init
+       choco install -y python awscli
+       ```
  
 1. **Launch Minikube:**
 
     !!! warning
         If your are not using ISEN Network, DO NOT set the proxy settings.
-        If you used gokube, replace 'minikube' by 'gokube' in the commands ;)
+        
+        If you used {==gokube==}, replace 'minikube' by 'gokube' in the commands ;)
      
     ```bash
     minikube --docker-env HTTP_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env HTTPS_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env NO_PROXY="127.0.0.1,192.168.99.0/24,10.0.0.0/8" start
