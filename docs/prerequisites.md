@@ -57,19 +57,27 @@ The diagram on the bottom of this page is designed to help you to understand how
       
     - Windows 7, 8, 10 Without Hyper-V : Use [Gokube](https://github.com/ThalesGroup/gokube)
        ```bash
-       gokube init
        choco install -y python awscli
+       gokube init
        ```
+    
+    - Mac OS : Install [Docker Desktop](https://docs.docker.com/docker-for-mac/install/)
+    
+    - Linux : Install manually [Docker](https://docs.docker.com/engine/install/#server) + Helm + Kubernetes Cli + AWS Cli + Python
+      
+    - Take a :coffee:
  
-1. **Launch Minikube:**
+1. **Launch Gokube or Minikube depending on your case (If not using docker desktop):**
 
     !!! warning
         If your are not using ISEN Network, DO NOT set the proxy settings.
         
         If you used {==gokube==}, replace 'minikube' by 'gokube' in the commands ;)
+        
+        If you used {==docker-desktop==} (Windows10 w. Hyper-V / MacOs / Linux) you should not need minikube since it come with kubernetes already.
      
     ```bash
-    minikube --docker-env HTTP_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env HTTPS_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env NO_PROXY="127.0.0.1,192.168.99.0/24,10.0.0.0/8" start
+    minikube/gokube --docker-env HTTP_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env HTTPS_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env NO_PROXY="127.0.0.1,192.168.99.0/24,10.0.0.0/8" start
     ```
 
     !!! info
@@ -97,7 +105,7 @@ The diagram on the bottom of this page is designed to help you to understand how
             export HTTPS_PROXY=http://<isen-proxy-host>:<isen-proxy-port>
             export NO_PROXY=127.0.0.1,192.168.99.0/24,10.0.0.0/8
 
-1. **Configure CLI:**
+1. **Configure CLI (If not using docker desktop):**
  
     After Minikube is launched, it can be necessary to configure your Docker CLI and Kubernetes CLI on your workstation.  
     This configuration is done through environment variables, which can be set with the following commands :
