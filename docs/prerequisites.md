@@ -67,17 +67,21 @@ The diagram on the bottom of this page is designed to help you to understand how
       
     - Take a :coffee:
  
-1. **Launch Gokube or Minikube depending on your case (If not using docker desktop):**
+1. **Launch Gokube or Minikube depending on your case (If not using Docker Desktop):**
 
     !!! warning
         If your are not using ISEN Network, DO NOT set the proxy settings.
         
         If you used {==gokube==}, replace 'minikube' by 'gokube' in the commands ;)
-        
-        If you used {==docker-desktop==} (Windows10 w. Hyper-V / MacOs / Linux) you should not need minikube since it come with kubernetes already.
-     
+             
     ```bash
-    minikube/gokube --docker-env HTTP_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env HTTPS_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env NO_PROXY="127.0.0.1,192.168.99.0/24,10.0.0.0/8" start
+    minikube --docker-env HTTP_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env HTTPS_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env NO_PROXY="127.0.0.1,192.168.99.0/24,10.0.0.0/8" start
+    ```
+   
+    or
+    
+    ```bash
+    gokube init --http-proxy "http://<isen-proxy-host>:<isen-proxy-port>" --https-proxy "http://<isen-proxy-host>:<isen-proxy-port>" --no-proxy "127.0.0.1,192.168.99.0/24,10.0.0.0/8"
     ```
 
     !!! info
@@ -105,7 +109,7 @@ The diagram on the bottom of this page is designed to help you to understand how
             export HTTPS_PROXY=http://<isen-proxy-host>:<isen-proxy-port>
             export NO_PROXY=127.0.0.1,192.168.99.0/24,10.0.0.0/8
 
-1. **Configure CLI (If not using docker desktop):**
+1. **Configure CLI (If not using Docker Desktop):**
  
     After Minikube is launched, it can be necessary to configure your Docker CLI and Kubernetes CLI on your workstation.  
     This configuration is done through environment variables, which can be set with the following commands :
