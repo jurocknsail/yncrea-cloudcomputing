@@ -61,12 +61,10 @@ The diagram on the bottom of this page is designed to help you to understand how
        gokube init
        ```
     
-    - Mac OS : Install [Docker Desktop](https://docs.docker.com/docker-for-mac/install/)
+    - Mac OS : Install [Docker Desktop](https://docs.docker.com/docker-for-mac/install/) and enable [Kubernetes](https://docs.docker.com/docker-for-windows/#kubernetes)
     
     - Linux : Install manually [Docker](https://docs.docker.com/engine/install/#server) + Helm + Kubernetes Cli + AWS Cli + Python
-      
-    - Take a :coffee:
- 
+       
 1. **Launch Gokube or Minikube depending on your case (If not using Docker Desktop):**
 
     !!! warning
@@ -108,6 +106,10 @@ The diagram on the bottom of this page is designed to help you to understand how
             export HTTP_PROXY=http://<isen-proxy-host>:<isen-proxy-port>
             export HTTPS_PROXY=http://<isen-proxy-host>:<isen-proxy-port>
             export NO_PROXY=127.0.0.1,192.168.99.0/24,10.0.0.0/8
+
+
+    >  You can now take a :coffee: waiting for everything to be ready !
+
 
 1. **Configure CLI (If not using Docker Desktop):**
  
