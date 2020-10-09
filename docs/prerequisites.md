@@ -64,9 +64,7 @@ The diagram on the bottom of this page is designed to help you to understand how
 
     !!! warning
         If your are not using ISEN Network, DO NOT set the proxy settings.
-        
-        If you used {==gokube==}, replace 'minikube' by 'gokube' in the commands ;)
-             
+                     
     ```bash
     minikube --docker-env HTTP_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env HTTPS_PROXY="http://<isen-proxy-host>:<isen-proxy-port>" --docker-env NO_PROXY="127.0.0.1,192.168.99.0/24,10.0.0.0/8" start
     ```
