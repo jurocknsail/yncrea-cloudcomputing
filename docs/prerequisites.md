@@ -36,11 +36,6 @@ The diagram on the bottom of this page is designed to help you to understand how
     According to the instructions [here](https://chocolatey.org/install). 
     You do not have to enter your email address in the first step. 
     
-    !!! info
-        The following steps are for Windows users.
-        Yet, you can use any other package manager on different OS : brew on Mac OS for example.
-        You can also install those dependencies separately (just google it) 
-
 1. **Install needed Tools:**
 
     Launch a terminal (CMD, PowerShell or GitBash etc ...) with Windows Administrator rights and install VirtualBox, Python, Minikube, Kubectl (the Kubernetes CLI), Helm and the Docker CLI with the help of Chocolatey:
