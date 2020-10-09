@@ -7,6 +7,9 @@ Please visit their [website](https://kubernetes.io/docs/concepts/overview/what-i
 
 In this lab, we will use [Minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/) as a local kubernetes, for develoment only.
 
+!!! info
+    No matter if you used _Gokube_ for previous Labs, it is running Minikube behind the scenes :wink:
+    If you used _Docker Desktop_ you don't have Minikube but an embedded K8S Cluster working the same way, all good !
 --- 
 
 ## Simple Application Deployment
@@ -54,7 +57,7 @@ In this lab, we will use [Minikube](https://kubernetes.io/docs/setup/learning-en
 	!!! tip
 	    Write down the name of the Pod, you'll need it later for reference.
 
-1. In order to access your application, you have to deploy a Kubernetes service.   
+1. In order to _access_ your application, you have to deploy a Kubernetes __Service__.   
 Download the following file to your *kubernetes* folder: 
 
     - [service.yaml](./files/kubernetes/service.yaml) 
@@ -83,6 +86,8 @@ Download the following file to your *kubernetes* folder:
             
 1. In your browser, open the IP of your Minikube VM (which you retrieved in the docker lab) and add the port that you retrieved from the last command, e.g.: 	[http://minikube-ip:30080](http://minikube-ip:30080).  
    
+    !!! tip
+        When using Docker Desktop embedded K8S in place of minikube, you can directly hit on [http://localhost:30080](http://localhost:30080) !
     !!! success
         You should see "Hello World" example from before, but it's hosted in Kubernetes :thumbsup:.  
 

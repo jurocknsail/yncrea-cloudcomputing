@@ -92,7 +92,7 @@ Then, we are 100% sure that running that way, it will be fine on ANY system !
 1. **Configure** the plugin to build, tag, and push the image to the local docker registry.
 
     ??? example "Solution"
-        ````xml linenums="1" hl_lines="1 22 24"
+        ````xml linenums="1" hl_lines="1 2 7 13 14 22 24"
         	<build>
         		<plugins>
         		    ...
@@ -127,7 +127,7 @@ Then, we are 100% sure that running that way, it will be fine on ANY system !
         
 1. **Verify**.
    
-    Check your newly built image has been pushed to your local registry :
+    Check your newly built image has been pushed to your local registry (by checking the 'created' time):
    
        ```` shell hl_lines="4"
        docker images

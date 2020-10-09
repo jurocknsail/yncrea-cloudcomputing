@@ -13,11 +13,17 @@ The goal here is to create a sample micro service coded in [Java Spring Boot](ht
     
     * Extract them in your work directory.
     
-    * Import it in your favorite Java IDE as a Maven project.
+    * Import it in your favorite Java IDE as a __Maven__ project.
     
         !!! tip
-            IntelliJ Idea Community Edition is a very good choice ... Just saying ...
-        
+            IntelliJ Idea Community Edition is a very good choice ... Just saying !
+            
+        !!! tip
+            If you don't use IntelliJ and need to install Maven, here is the command :wink:
+            ```bash linenums="1"
+            choco install maven
+            ```
+            
 1. **Edit** the code
 
     * Modify the main class :
@@ -26,7 +32,7 @@ The goal here is to create a sample micro service coded in [Java Spring Boot](ht
         
         as below :
     
-        ``` java hl_lines="9 13 14 15 16 17 19 20 21 22 23 24 26 27 28 29 30 31" linenums="1"
+        ``` java hl_lines="9 13 14 15 16 17 19 20 21 22 23 25 26 27 28 29 30" linenums="1"
         package com.yncrea.cloudcomputing;
         
         import org.springframework.boot.SpringApplication;

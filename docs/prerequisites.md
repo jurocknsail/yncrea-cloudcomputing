@@ -106,7 +106,7 @@ The diagram on the bottom of this page is designed to help you to understand how
     >  You can now take a :coffee: waiting for everything to be ready !
 
 
-1. **Configure CLI (If not using Docker Desktop):**
+1. **Configure CLI (If NOT using Docker Desktop):**
  
     After Minikube is launched, it can be necessary to configure your Docker CLI and Kubernetes CLI on your workstation.  
     This configuration is done through environment variables, which can be set with the following commands :
@@ -153,8 +153,8 @@ The diagram on the bottom of this page is designed to help you to understand how
 
 1. **Once satisfied with your configuration, make it permanent and system wide :**
 
- - On Shell by editing your *.bashrc* file and sourcing it
- - On Windows by settings the environement variables manually.
+    - On Shell by editing your *.bashrc* file and sourcing it
+    - On Windows by settings the environement variables manually.
 
     It will be mandatory later when we will use Maven to automate the build.
           ```bash

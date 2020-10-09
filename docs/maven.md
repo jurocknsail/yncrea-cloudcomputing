@@ -52,7 +52,7 @@ In this course we will use it to automate our development phases.
         
         They are declared in the pom as following :
         
-        ````xml linenums="1" hl_lines="13 15"
+        ````xml linenums="1" hl_lines="5 13 15"
       	<build>
             ...
 			<plugin>
