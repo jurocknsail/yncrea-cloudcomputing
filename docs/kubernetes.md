@@ -350,7 +350,7 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
 
     Simply use the Helm CLI to deploy the Chart :
     
-        helm install --name silly-unicorn src/helm/chart/yncrea-hellomicro
+        helm install silly-unicorn src/helm/chart/yncrea-hellomicro
         
     !!! note
         We fix the name of the release ( `--name` ) in order to be able to upgrade/delete it automatically. 
