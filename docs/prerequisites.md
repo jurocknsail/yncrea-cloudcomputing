@@ -47,12 +47,12 @@ The diagram on the bottom of this page is designed to help you to understand how
     
     - Windows 10 with Hyper-V : 
        ```bash 
-       choco install -y python awscli docker-desktop
+       choco install -y python awscli docker-desktop kubernetes-helm
        ```
       
     - Windows 7, 8, 10 Without Hyper-V : Use [Gokube](https://github.com/ThalesGroup/gokube)
        ```bash
-       choco install -y python awscli virtualbox
+       choco install -y python awscli virtualbox kubernetes-helm
        gokube init
        ```
     
