@@ -194,13 +194,13 @@ As you already learned how to inject environment variables, let's now inject the
         You can also create Secrets from a [file](https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually).
         It will be usefull later to automatize our deployment.
     
-1. Update your Pod definiton to mount the _yncrea-hellomicro-secret_ secret in `/var/secret/`:
+1. Update your Pod definiton (deployment) to mount the _yncrea-hellomicro-secret_ secret in `/var/secret/` and to consume it :
 
 		kubectl edit deployment yncrea-hellomicro
 
 	And edit the file in the following way:
 
-    ````yaml linenums="1" hl_lines="19 20 21 22 28 29 30 31"
+    ````yaml linenums="1" hl_lines="9 10 11 12 13 19 20 21 22 28 29 30 31"
     spec:
       containers:
       - env:
@@ -209,6 +209,11 @@ As you already learned how to inject environment variables, let's now inject the
             configMapKeyRef:
               key: greeting
               name: yncrea-hellomicro-configmap
+        - name: MY_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: secret.txt
+              name: yncrea-hellomicro-secret
         image: test/cloudcomputing:latest
         imagePullPolicy: IfNotPresent
         name: yncrea-hellomicro
@@ -233,30 +238,8 @@ As you already learned how to inject environment variables, let's now inject the
         secret:
           secretName: yncrea-hellomicro-secret
     ````
-
-1. Now, you'll have to modify your deployment in order to consume the Secret:
-
-		kubectl edit deployment yncrea-hellomicro
-
-	And edit the file in the following way:
-
-    ````yaml linenums="1" hl_lines="4 5 6 7 8"
-        spec:
-          containers:
-          - env:
-            - name: MY_SECRET
-              valueFrom:
-                secretKeyRef:
-                  key: secret.txt
-                  name: yncrea-hellomicro-secret
-            - name: GREETING
-              valueFrom:
-                configMapKeyRef:
-                  key: greeting
-                  name: yncrea-hellomicro-configmap
-    ````
    
-1. Refresh your browser, and see how the greeting changed.
+1. Refresh your browser, and see how the _/secret_ API changed and is now displaying your decoded secret !
 
     !!! success
         Congratulations, you just learned how to configure an application in Kubernetes using Secrets !
