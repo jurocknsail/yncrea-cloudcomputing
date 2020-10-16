@@ -136,3 +136,23 @@ Then, we are 100% sure that running that way, it will be fine on ANY system !
        <your_docker_id>/yncrea-hellomicro             latest              b13bcef528c5        10 seconds ago      681MB
 
        ````
+
+---
+
+## Cleanup
+
+Now it is time to delete our docker container otherwise we will pollute the next labs.
+
+List all docker container running 
+ 
+    ```` shell
+    docker ps
+    ````
+
+Find the ID of the Docker Container you just created and use the first 3 digits of it to stop it :
+
+    ```` shell
+    docker stop XYZ
+    ````
+
+You should not any containers running yncrea-hellomicro image anymore when doing `docker ps`.
