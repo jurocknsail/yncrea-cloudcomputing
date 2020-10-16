@@ -293,8 +293,13 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
         -   `deployment.yaml`
         -   `service.yaml`
         -   `configmap.yaml`
+        
+    - Put the file [secret.yaml](./files/kubernetes/secret.yaml) in your Chart's templates directory along side other files.
     
-    - Edit the `deployment.yaml` to reports the changes done previously to get the env variables from the Configmap and the Secret.
+        !!! info
+            This is the secret we created manually before, now provisionned as a k8s ressource file for automation purpose !
+
+    - Edit the `deployment.yaml` file (if not done already) to report the changes done previously (when we used `kubectl edit` commands) to get the env variables from the Configmap and the Secret.
     
     - In the `Chart` folder (`src/helm/chart/yncrea-hellomicro`), download and put :
         -   [Chart.yaml](./files/kubernetes/Chart.yaml)
@@ -360,41 +365,34 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
         helm install silly-unicorn src/helm/chart/yncrea-hellomicro
         
     !!! note
-        We fix the name of the release ( `--name` ) in order to be able to upgrade/delete it automatically. 
+        We fix the name of the release ( `silly-unicorn` ) in order to be able to upgrade/delete it automatically. 
         
         Otherwise, Helm would assign a random name.
         
-    Verify your Chart deployed properly the µS (its {==deployment==} and {==service==}). 
+    Verify your Chart deployed properly the µS (its {==deployment==}, {==pods==}, {==configmap==}, {==secret==} and {==service==}). 
     
-    Check everything is working as expected by accessing your REST APIs in your browser as done before.
+    Check everything is working as expected by accessing your REST APIs (`/`, `/hello`, `/secret`) in your browser as done before.
     
     !!! success
         Congratulation, you deployed your fisrt Chart (or Application) using Helm !
 
-1. Upgrade the Chart image
+1. Upgrade the release
 
     At this moment, we have our Chart ready, our app is running.
     
-    But if you try the `/secret` API, you will notice our secret is gone.
+    But what if we want to update it ?
     
-    Let's add it back to the chart, this time using a K8S ressource file.
+    Let's do a change in the code and add a new API `/new` returning a String "Hello from New API"  
     
-    - Put the file [secret.yaml](./files/kubernetes/secret.yaml) in your Chart's templates directory.
+    - Rebuild your project to publish your new release.
     
-    - Check it seems correct.
-        !!! info
-            the value of the data is our text, base64 encoded for security.
-            
     - Then try {==upgrading==} your application using :
     
         ````bash
         helm upgrade silly-unicorn src/helm/chart/yncrea-hellomicro
-        ```` 
-      
-        !!! warning
-            You may need to delete previously created secret ...
+        ````
          
-    - Check the `/secret` API is now working as expected.
+    - Check the `/new` API is there and returning expected value.
     
         !!! success
             Congratulation, you upgraded your first application using Helm !
