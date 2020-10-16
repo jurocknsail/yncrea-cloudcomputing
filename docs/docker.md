@@ -62,7 +62,7 @@ Then, we are 100% sure that running that way, it will be fine on ANY system !
     ```
    Access your application REST APIs with your browser.
    
-    Example : <http://minikube-ip:8080/hello>
+    Example : <http://minikube-ip:8080/hello> or <http://localhost:8080/hello> when using Docker Desktop. 
     
     !!! tip
         To get the IP of your minikube cluster run the command :
