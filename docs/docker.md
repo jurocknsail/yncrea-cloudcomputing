@@ -145,15 +145,15 @@ Now it is time to delete our docker container otherwise we will pollute the next
 
 List all docker container running 
  
-    ```` shell
-    docker ps
-    ````
+```` shell
+docker ps
+````
 
 Find the ID of the Docker Container you just created and use the first 3 digits of it to stop it :
 
-    ```` shell
-    docker stop XYZ
-    ````
+```` shell
+docker stop XYZ
+````
 
 You should not see any containers running _yncrea-hellomicro_ image when doing `docker ps`.  
 Access your application REST APIs with your browser should __NOT WORK__ anymore.
