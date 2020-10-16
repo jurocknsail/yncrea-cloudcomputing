@@ -515,6 +515,9 @@ The solution is : **Helm Charts**. Have a look to their awesome [documentation](
     
         Example : <http://192.168.99.100:30080/hello>
 
+    !!! success
+        Congratulation, you can now do any code change on the application java code or the chart config, 
+        you just have to execute a `mvn clean install` command to build and redeploy your latest app version automatically !
 ---
 
 ## Remote Debug
