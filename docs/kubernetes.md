@@ -94,6 +94,9 @@ Download the following file to your *kubernetes* folder:
         When using Docker Desktop embedded K8S in place of minikube, you can directly hit on [http://localhost:30080](http://localhost:30080) !
     !!! success
         You should see "Hello World" example from before, but it's hosted in Kubernetes :thumbsup:.  
+        
+        In addition you will notice that the micro service is now displaying the _hostname_.   
+        Indeed, now the container is __orchestrated__ by kubernetes, and kubernetes filled the default env vars such as _HOSTNAME_ used in our microservice Java Code ;)
 
 ---
 
