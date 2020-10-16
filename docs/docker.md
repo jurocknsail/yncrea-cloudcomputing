@@ -155,4 +155,5 @@ Find the ID of the Docker Container you just created and use the first 3 digits 
     docker stop XYZ
     ````
 
-You should not any containers running yncrea-hellomicro image anymore when doing `docker ps`.
+You should not see any containers running _yncrea-hellomicro_ image when doing `docker ps`.  
+Access your application REST APIs with your browser should __NOT WORK__ anymore.
