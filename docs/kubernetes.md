@@ -108,7 +108,9 @@ Download the following file to your *kubernetes* folder:
 
 	With this command, you update the Kubernetes **Deployment** and instruct it to have a total of *three* replicas. 
 	
-	Kubernetes will handle that by instantiating *two* additional **Pods** to handle more workload.
+	Kubernetes will handle that by instantiating *two* additional **Pods** to handle more workload.  
+	
+	You can easily check by doing `kubebctl get pods`.  
 
 1. Refresh your browser several times and monitor how the hostname of your microservice changes. 
     
@@ -136,7 +138,9 @@ Download the following file to your *kubernetes* folder:
 	!!! warning
 	    A K8S ressource edited with `kubectl edit` command is **temporary**. 
 	    
-	    The modification will be lost when deleting / re-deploying the app. 
+	    The modification will be lost when deleting / re-deploying the app.  
+	    
+	    The modificatin __needs to be reported__ to the file `deployment.yaml` after you are satisfied with the result to make it permanent at each app deployment.
 
 1. Refresh your browser, and see how to greeting changed.
 
