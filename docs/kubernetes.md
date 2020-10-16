@@ -47,6 +47,10 @@ In this lab, we will use [Minikube](https://kubernetes.io/docs/setup/learning-en
    	    The number of pods (more specifically, the number of containers) running is displayed in the "READY" column.
    	    
    	    1/1 means 1 container is working fine out of 1 expected, all good :muscle: !
+ 
+    !!! info
+        Even if you have one pod running, if now try to access your application REST APIs through your browser, it should __NOT__ work.  
+        (Unless you forgot to delete the docker container from previous Lab, in this case, the old container is repsonding, not the newly created pod !)
 
 1. You can also check the running Pods in your Kubernetes cluster by typing:  
 
