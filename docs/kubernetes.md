@@ -246,6 +246,19 @@ As you already learned how to inject environment variables, let's now inject the
 
 ---
 
+## Cleanup
+
+Before going to next steps, it is important to cleanup all this *** we created manually to not conflict with later all-in-one deployment with Charts.
+
+```` shell
+kubectl delete deployment yncrea-hellomicro
+kubectl delete service yncrea-hellomicro-service
+kubectl delete cm yncrea-hellomicro-configmap
+kubectl delete secret yncrea-hellomicro-secret
+````
+
+---
+
 ## Helm Charts
 
 To deploy our containers on kubernetes, we could create k8s objects and deploy them individually as above.
