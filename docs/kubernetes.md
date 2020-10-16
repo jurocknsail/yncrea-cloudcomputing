@@ -200,7 +200,7 @@ As you already learned how to inject environment variables, let's now inject the
 
 	And edit the file in the following way:
 
-    ````yaml linenums="1" hl_lines="9 10 11 12 13 19 20 21 22 28 29 30 31"
+    ````yaml linenums="1" hl_lines="9 10 11 12 13 24 25 26 27 33 34 35 36"
     spec:
       containers:
       - env:
