@@ -40,14 +40,12 @@ In this chapter, we'll explain you how to connect with the AWS CLI to your AWS A
 
 1. Copy and paste the content in the shown box to `%HOME%/.aws/credentials`.
 
-1. In a terminal, type the following:  
+1. Open `%HOME%/.aws/config` and paste 
 
-        aws configure
+        [default]
+        region = us-east-1
+        output = yaml
 
-    - Press Enter to keep AWS Key / Secrets you just copied unchanged
-    - Enter `us-east-1` as default region and set the default output to 'yaml'.  
-    
-    This information will be stored in `%HOME%/.aws/config`.
 
 1. Verify that you have access to the training account:
 
