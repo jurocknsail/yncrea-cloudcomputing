@@ -2,7 +2,7 @@ site_name: 'Yncrea - Intro to Cloud Computing Course'
 
 # Repository
 repo_name: Corrections
-repo_url: https://github.com/jurocknsail/yncrea-cloudcomputing-labs
+repo_url: https://github.com/jurocknsail/yncrea-cloudcomputing-code-labs
 edit_uri: ""
 site_description: >-
   This training material is part of <b>ITII 3 - Cloud Computing Course</b> for <b>YNCREA Toulon.</b>
