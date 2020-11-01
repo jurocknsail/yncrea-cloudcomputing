@@ -110,7 +110,7 @@ Download the following file to your *kubernetes* folder:
 	
 	Kubernetes will handle that by instantiating *two* additional **Pods** to handle more workload.  
 	
-	You can easily check by doing `kubebctl get pods`.  
+	You can easily check by doing `kubectl get pods`.  
 
 1. Refresh your browser several times and monitor how the hostname of your microservice changes. 
     
