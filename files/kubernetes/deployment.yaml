@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yncrea-hellomicro
+  labels:
+    app.kubernetes.io/name: yncrea-hellomicro
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: yncrea-hellomicro
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: yncrea-hellomicro
+    spec:
+      containers:
+        - name: yncrea-hellomicro
+          image: <your_docker_id>/yncrea-hellomicro:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: GREETING
+              value: "You"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP

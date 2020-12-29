@@ -1,0 +1,149 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: A stack for deploying containerized applications onto a cluster of EC2
+  hosts using Elastic Container Service. This stack runs containers on
+  hosts that are in a public VPC subnet. It is meant to be used on an existing Default VPC.
+
+Parameters:
+
+  EnvironmentName:
+    Description: An environment name that will be prefixed to resource names
+    Type: String
+    Default: ecscluster
+
+  VPC:
+    Description: Choose which VPC this ECS cluster should be deployed to
+    Type: AWS::EC2::VPC::Id
+
+  Subnets:
+    Description: Choose which subnets this ECS cluster should be deployed to
+    Type: List<AWS::EC2::Subnet::Id>
+
+  SecurityGroup:
+    Description: Select the Security Group to use for the ECS cluster hosts
+    Type: AWS::EC2::SecurityGroup::Id
+
+  DesiredCapacity:
+    Type: Number
+    Default: '1'
+    Description: Number of EC2 instances to launch in your ECS cluster.
+
+  MaxSize:
+    Type: Number
+    Default: '1'
+    Description: Maximum number of EC2 instances that can be launched in your ECS cluster.
+
+  ECSAMI:
+    Description: ECS-Optimized AMI ID
+    Type: String
+    Default: ami-08087103f9850bddd
+
+  InstanceType:
+    Description: Which instance type should we use to build the ECS cluster?
+    Type: String
+    Default: t2.micro
+
+Resources:
+
+  # ECS Resources
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Ref EnvironmentName
+
+  # Autoscaling group. This launches the actual EC2 instances that will register
+  # themselves as members of the cluster, and run the docker containers.
+  # In order to deploy test images, Health Checks has been disabled for this ASG.
+  # This is not a good practice for Production !
+  ECSAutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      VPCZoneIdentifier: !Ref Subnets
+      LaunchConfigurationName: !Ref 'ContainerInstances'
+      MinSize: '1'
+      MaxSize: !Ref 'MaxSize'
+      DesiredCapacity: !Ref 'DesiredCapacity'
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT15M
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MinInstancesInService: 1
+        MaxBatchSize: 1
+        PauseTime: PT15M
+        SuspendProcesses:
+          - HealthCheck
+          - ReplaceUnhealthy
+          - AZRebalance
+          - AlarmNotification
+          - ScheduledActions
+        WaitOnResourceSignals: true
+  ContainerInstances:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: !Ref 'ECSAMI'
+      SecurityGroups: [!Ref 'SecurityGroup']
+      InstanceType: !Ref 'InstanceType'
+      IamInstanceProfile: !Ref 'EC2InstanceProfile'
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+          yum install -y https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
+          echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config
+          yum install -y aws-cfn-bootstrap hibagent
+          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource ECSAutoScalingGroup --region ${AWS::Region}
+          /usr/bin/enable-ec2-spot-hibernation
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles: [!Ref 'EC2Role']
+
+  # Role for the EC2 hosts. This allows the ECS agent on the EC2 hosts
+  # to communciate with the ECS control plane, as well as download the docker
+  # images from ECR to run on your host.
+  EC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ec2.amazonaws.com]
+            Action: ['sts:AssumeRole']
+      Path: /
+      Policies:
+        - PolicyName: ecs-service
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'ecs:CreateCluster'
+                  - 'ecs:DeregisterContainerInstance'
+                  - 'ecs:DiscoverPollEndpoint'
+                  - 'ecs:Poll'
+                  - 'ecs:RegisterContainerInstance'
+                  - 'ecs:StartTelemetrySession'
+                  - 'ecs:Submit*'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                  - 'ecr:GetAuthorizationToken'
+                  - 'ecr:BatchGetImage'
+                  - 'ecr:GetDownloadUrlForLayer'
+                Resource: '*'
+
+# These are the values output by the CloudFormation template. Be careful
+# about changing any of them, because of them are exported with specific
+# names so that the other task related CF templates can use them.
+Outputs:
+  ClusterName:
+    Description: The name of the ECS cluster
+    Value: !Ref 'ECSCluster'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ClusterName' ] ]
+
+  SecurityGroup:
+    Description: A security group used to allow containers to receive traffic
+    Value: !Ref 'SecurityGroup'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'SecurityGroup' ] ]

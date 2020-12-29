@@ -1,0 +1,341 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'CloudFormation Application stack'
+
+Parameters: 
+  InstanceTypeParameter: 
+    Type: String
+    Default: t2.micro
+    AllowedValues: 
+      - t2.micro
+      - m5.large
+    Description: Enter t2.micro or m5.large. Default is t2.micro.
+  KeyName:
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+    Type: AWS::EC2::KeyPair::KeyName
+  DBName:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+    Default: isen
+    Description: The Isen database name
+    MaxLength: '64'
+    MinLength: '1'
+    Type: String
+  DBPassword:
+    AllowedPattern: '[a-zA-Z0-9]*'
+    ConstraintDescription: must contain only alphanumeric characters.
+    Description: The Isen database admin account password
+    MaxLength: '41'
+    MinLength: '8'
+    NoEcho: 'true'
+    Type: String
+  DBRootPassword:
+    AllowedPattern: '[a-zA-Z0-9]*'
+    ConstraintDescription: must contain only alphanumeric characters.
+    Description: MySQL root password
+    MaxLength: '41'
+    MinLength: '8'
+    NoEcho: 'true'
+    Type: String
+  DBUser:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+    Description: The ISEN database admin account username
+    MaxLength: '16'
+    MinLength: '1'
+    NoEcho: 'true'
+    Type: String
+  Subnets:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: The Subnets in which the the LoadBalancer will deployed in (select at least two)
+  UpdateVariable:
+    Type: String
+    Description: Enter a random string. This will ensure that the application instance will always be updated.
+Mappings: 
+  RegionMap: 
+    us-east-1: 
+      "HVM64": "ami-00b882ac5193044e4"
+    eu-west-1: 
+      "HVM64": "ami-0f62aafc6efe8fd7b"
+
+Resources: 
+
+  LoadBalancer:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    Properties:
+      Scheme: "internet-facing"
+      Subnets: !Ref Subnets
+      SecurityGroups:
+      - !GetAtt LoadBalancerSecurityGroup.GroupId
+  HttpListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+      - TargetGroupArn: !Ref DefaultTargetGroup
+        Type: forward
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+  DefaultTargetGroup:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      HealthCheckIntervalSeconds: 15
+      HealthCheckPath: '/'
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 10
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      VpcId: !GetAtt LoadBalancerSecurityGroup.VpcId
+      Matcher:
+        HttpCode: '200-299'
+      Port: 8080
+      Protocol: HTTP
+
+  ApplicationASG: 
+    Type: AWS::AutoScaling::AutoScalingGroup
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MinInstancesInService: 1
+        PauseTime: PT5M
+        WaitOnResourceSignals: true
+    Properties: 
+      AvailabilityZones: 
+        Fn::GetAZs: ""
+      LaunchConfigurationName: !Ref ApplicationLC
+      MinSize: "1"
+      MaxSize: "4"
+      TargetGroupARNs:
+        - !Ref DefaultTargetGroup
+      MetricsCollection: 
+        - 
+          Granularity: "1Minute"
+          Metrics: 
+            - "GroupMinSize"
+            - "GroupMaxSize"
+      Tags:
+        - Key: Name
+          Value: application
+          PropagateAtLaunch: true  
+
+  ApplicationLC: 
+    Type: AWS::AutoScaling::LaunchConfiguration
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT5M
+    DependsOn: Database
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          application_install:
+          - install_cfn
+          - install_application
+          - configure_application
+        install_cfn:
+          files:
+            /etc/cfn/cfn-hup.conf:
+              content: !Sub |
+                [main]
+                stack= ${AWS::StackId}
+                region=${AWS::Region}
+              group: root
+              mode: '000400'
+              owner: root
+            /etc/cfn/hooks.d/cfn-auto-reloader.conf:
+              content: !Sub |
+                [cfn-auto-reloader-hook]
+                triggers=post.update
+                path=Resources.Application.Metadata.AWS::CloudFormation::Init
+                action=/opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource ApplicationLC --configsets application_install --url https://stackbuilder.amazonaws.com
+              group: root
+              mode: '000400'
+              owner: root
+          services:
+            sysvinit:
+              cfn-hup:
+                enabled: true
+                ensureRunning: true
+                files:
+                - /etc/cfn/cfn-hup.conf
+                - /etc/cfn/hooks.d/cfn-auto-reloader.conf
+        install_application:
+          sources: 
+            /usr/local/bin/crud-app: "https://3r1co-github-artifacts.s3.amazonaws.com/crud-app.tar.gz"
+          files:
+            /etc/systemd/system/crud-app.service:
+              content: !Sub |
+                [Unit]
+                Description=CRUD App Service
+                After=network.target
+                [Service]
+                Type=simple
+                Restart=always
+                RestartSec=1
+                User=root
+                WorkingDirectory=/usr/local/bin/crud-app
+                ExecStart=/usr/local/bin/crud-app/crud-app --dbHost ${Database.PrivateIp} --dbName ${DBName} --dbUser ${DBUser} --dbPass ${DBPassword}
+                [Install]
+                WantedBy=multi-user.target
+              group: root
+              mode: '000664'
+              owner: root
+        configure_application:
+          commands:
+            01_enable_service:
+              command: "systemctl enable crud-app"
+            02_start_service:
+              command: "systemctl start crud-app"
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", HVM64]
+      InstanceType: !Ref InstanceTypeParameter
+      KeyName:
+        Ref: KeyName
+      SecurityGroups:
+      - Ref: ApplicationSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+           #!/bin/bash -xe
+           # ${UpdateVariable}
+           yum update -y aws-cfn-bootstrap
+           /opt/aws/bin/cfn-init -v --stack ${AWS::StackId} --resource ApplicationLC --configsets application_install --region ${AWS::Region}
+           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource ApplicationASG --region ${AWS::Region}
+
+  Database: 
+    Type: "AWS::EC2::Instance"
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT5M
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          database_install:
+          - install_cfn
+          - install_database
+          - configure_database
+        configure_database:
+          commands:
+            01_set_mysql_root_password:
+              command: !Sub |
+                mysqladmin -u root password '${DBRootPassword}'
+              test: !Sub |
+                $(mysql ${DBName} -u root --password='${DBRootPassword}' >/dev/null 2>&1 </dev/null); (( $? != 0 ))
+            02_create_database:
+              command: !Sub |  
+                mysql -u root --password='${DBRootPassword}' < /tmp/setup.mysql
+              test: !Sub |
+                $(mysql ${DBName} -u root --password='${DBRootPassword}' >/dev/null 2>&1 </dev/null); (( $? !=0))
+        install_cfn:
+          files:
+            /etc/cfn/cfn-hup.conf:
+              content: !Sub |
+                [main]
+                stack= ${AWS::StackId}
+                region=${AWS::Region}
+              group: root
+              mode: '000400'
+              owner: root
+            /etc/cfn/hooks.d/cfn-auto-reloader.conf:
+              content: !Sub |
+                [cfn-auto-reloader-hook]
+                triggers=post.update
+                path=Resources.WebServer.Metadata.AWS::CloudFormation::Init
+                action=/opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource Database --configsets database_install --url https://stackbuilder.amazonaws.com
+              group: root
+              mode: '000400'
+              owner: root
+          services:
+            sysvinit:
+              cfn-hup:
+                enabled: true
+                ensureRunning: true
+                files:
+                - /etc/cfn/cfn-hup.conf
+                - /etc/cfn/hooks.d/cfn-auto-reloader.conf
+        install_database:
+          files:
+            /tmp/setup.mysql:
+              content: !Sub |
+                CREATE DATABASE ${DBName};
+                USE ${DBName};
+                DROP TABLE IF EXISTS `employee`;
+                CREATE TABLE `employee` (
+                  `id` int(6) unsigned NOT NULL AUTO_INCREMENT,
+                  `name` varchar(30) NOT NULL,
+                  `city` varchar(30) NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+                GRANT ALL PRIVILEGES ON *.* TO '${DBUser}'@'%' IDENTIFIED BY '${DBPassword}';
+              group: root
+              mode: '000400'
+              owner: root
+          packages:
+            yum:
+              mariadb-server: []
+              mariadb: []
+          services:
+            sysvinit:
+              mariadb:
+                enabled: true
+                ensureRunning: true
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", HVM64]
+      InstanceType: !Ref InstanceTypeParameter
+      Tags:
+      - Key: Name
+        Value: database
+      KeyName:
+        Ref: KeyName
+      SecurityGroups:
+      - Ref: DatabaseSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          yum update -y aws-cfn-bootstrap
+          /opt/aws/bin/cfn-init -v --stack ${AWS::StackId} --resource Database --configsets database_install --region ${AWS::Region}
+          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource Database --region ${AWS::Region}
+
+#############################
+#                           #      
+#       Security Groups     #
+#                           #
+#############################
+
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Enable SSH and HTTP access"
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 80
+        IpProtocol: tcp
+        ToPort: 80
+
+  ApplicationSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Enable SSH and HTTP access"
+      SecurityGroupIngress:
+      - SourceSecurityGroupName: !Ref LoadBalancerSecurityGroup
+        FromPort: 8080
+        IpProtocol: tcp
+        ToPort: 8080
+      - CidrIp: 0.0.0.0/0 #Attention!! Don't do this in real life!!
+        FromPort: 22
+        IpProtocol: tcp
+        ToPort: 22
+
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Enable SSH and MySQL access"
+      SecurityGroupIngress:
+      - SourceSecurityGroupName: !Ref ApplicationSecurityGroup
+        FromPort: 3306
+        IpProtocol: tcp
+        ToPort: 3306
+      - CidrIp: 0.0.0.0/0 #Attention!! Don't do this in real life!!
+        FromPort: 22
+        IpProtocol: tcp
+        ToPort: 22

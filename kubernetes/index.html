@@ -1,0 +1,1585 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This training material is part of <b>ITII 3 - Cloud Computing Course</b> for <b>YNCREA Toulon.</b> <br><br> <i>The course takes place over two days and intends to give students an overview of all technologies that are evolving around Continuous Integration and Delivery with a special focus on Cloud Technologies.</i>">
+      
+      
+      
+      <link rel="shortcut icon" href="../files/yncrea.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.1.5">
+    
+    
+      
+        <title>Kubernetes - Charts Lab - Yncrea - Intro to Cloud Computing Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.f6cf1dc9.min.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/palette.85bb4ebe.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#00bdd6">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","None","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){if(this.value){var e=document.location.pathname;ga("send","pageview",e+"?q="+this.value)}})}),document.addEventListener("DOMContentSwitch",function(){ga("send","pageview",document.location.pathname)})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="cyan" data-md-color-accent="cyan">
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kubernetes-lab" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="Yncrea - Intro to Cloud Computing Course" class="md-header-nav__button md-logo" aria-label="Yncrea - Intro to Cloud Computing Course">
+      
+  <img src="../files/yncrea.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Yncrea - Intro to Cloud Computing Course
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Kubernetes - Charts Lab
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/jurocknsail/yncrea-cloudcomputing-code-labs" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Corrections
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+          
+
+  
+
+<nav class="md-tabs md-tabs--active" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+    
+    <a href=".." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+      
+        
+      
+      <a href="../prerequisites/" class="md-tabs__link md-tabs__link--active">
+        Day#1
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+      
+      <a href="../aws/" class="md-tabs__link">
+        Day#2
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+      
+      <a href="../further/" class="md-tabs__link">
+        Going Further
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Yncrea - Intro to Cloud Computing Course" class="md-nav__button md-logo" aria-label="Yncrea - Intro to Cloud Computing Course">
+      
+  <img src="../files/yncrea.png" alt="logo">
+
+    </a>
+    Yncrea - Intro to Cloud Computing Course
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/jurocknsail/yncrea-cloudcomputing-code-labs" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Corrections
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    <label class="md-nav__link" for="nav-2">
+      Day#1
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Day#1" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Day#1
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../prerequisites/" class="md-nav__link">
+      Env - Prerequisites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../javaspringboot/" class="md-nav__link">
+      Code - SpringBoot Lab
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../maven/" class="md-nav__link">
+      Code - Get Started with Maven
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../docker/" class="md-nav__link">
+      Docker - Containers Lab
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Kubernetes - Charts Lab
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Kubernetes - Charts Lab
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#simple-application-deployment" class="md-nav__link">
+    Simple Application Deployment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-scaling" class="md-nav__link">
+    Application Scaling
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-config" class="md-nav__link">
+    Application Config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-secrets" class="md-nav__link">
+    Application Secrets
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleanup" class="md-nav__link">
+    Cleanup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helm-charts" class="md-nav__link">
+    Helm Charts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-automatically-with-maven" class="md-nav__link">
+    Deploying automatically with Maven :
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remote-debug" class="md-nav__link">
+    Remote Debug
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../github/" class="md-nav__link">
+      Github - Git Repository Lab
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../github-actions/" class="md-nav__link">
+      Github - Actions Lab / CI
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
+    <label class="md-nav__link" for="nav-3">
+      Day#2
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Day#2" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Day#2
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../aws/" class="md-nav__link">
+      AWS - Basics Lab
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../cloudformation/" class="md-nav__link">
+      AWS - CloudFormation with Github Actions / CD
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ecs/" class="md-nav__link">
+      AWS - ECS Lab
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../cfn-nag/" class="md-nav__link">
+      AWS - CloudFormation Linting
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../eks/" class="md-nav__link">
+      AWS - EKS Lab
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../cleanup/" class="md-nav__link">
+      AWS - Cleanup
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+    <label class="md-nav__link" for="nav-4">
+      Going Further
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Going Further" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        Going Further
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../further/" class="md-nav__link">
+      Ideas
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#simple-application-deployment" class="md-nav__link">
+    Simple Application Deployment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-scaling" class="md-nav__link">
+    Application Scaling
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-config" class="md-nav__link">
+    Application Config
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-secrets" class="md-nav__link">
+    Application Secrets
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleanup" class="md-nav__link">
+    Cleanup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helm-charts" class="md-nav__link">
+    Helm Charts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-automatically-with-maven" class="md-nav__link">
+    Deploying automatically with Maven :
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remote-debug" class="md-nav__link">
+    Remote Debug
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="kubernetes-lab">Kubernetes Lab</h1>
+<p>We saw that Docker helps creating Containers. 
+Now we need to manage these containers : here comes Kubernetes, the <strong>"Container Orchestrator"</strong>, also called <em>"K8S"</em>.</p>
+<p>Please visit their <a href="https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/">website</a> explaining in details what is K8S ...</p>
+<p>In this lab, we will use <a href="https://kubernetes.io/docs/setup/learning-environment/minikube/">Minikube</a> as a local kubernetes, for develoment only.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>No matter if you used <em>Gokube</em> for previous Labs, it is running Minikube behind the scenes <img alt="😉" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f609.svg" title=":wink:" />
+If you used <em>Docker Desktop</em> you don't have Minikube but an embedded K8S Cluster working the same way, all good !</p>
+</div>
+<hr />
+<h2 id="simple-application-deployment">Simple Application Deployment</h2>
+<ol>
+<li>
+<p>Verify that you can access Kubernetes:  </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl version</span>
+</code></pre></div>
+</td></tr></table>
+<p>If you see a <code>Server Version</code> like below, it means your Kubernetes CLI can connect to your Kubernetes VM:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>$ kubectl version
+Client Version: version.Info<span class="o">{</span>Major:<span class="s2">&quot;1&quot;</span>, Minor:<span class="s2">&quot;13&quot;</span>, GitVersion:<span class="s2">&quot;v1.13.10&quot;</span>, GitCommit:<span class="s2">&quot;37d169313237cb4ceb2cc4bef300f2ae3053c1a2&quot;</span>, GitTreeState:<span class="s2">&quot;clean&quot;</span>, BuildDate:<span class="s2">&quot;2019-08-19T10:52:43Z&quot;</span>, GoVersion:<span class="s2">&quot;go1.11.13&quot;</span>, Compiler:<span class="s2">&quot;gc&quot;</span>, Platform:<span class="s2">&quot;linux/amd64&quot;</span><span class="o">}</span>
+Server Version: version.Info<span class="o">{</span>Major:<span class="s2">&quot;1&quot;</span>, Minor:<span class="s2">&quot;13&quot;</span>, GitVersion:<span class="s2">&quot;v1.13.10&quot;</span>, GitCommit:<span class="s2">&quot;37d169313237cb4ceb2cc4bef300f2ae3053c1a2&quot;</span>, GitTreeState:<span class="s2">&quot;clean&quot;</span>, BuildDate:<span class="s2">&quot;2019-08-19T10:44:49Z&quot;</span>, GoVersion:<span class="s2">&quot;go1.11.13&quot;</span>, Compiler:<span class="s2">&quot;gc&quot;</span>, Platform:<span class="s2">&quot;linux/amd64&quot;</span><span class="o">}</span>
+</code></pre></div>
+</td></tr></table>
+</li>
+<li>
+<p>Create the folder <code>src/kubernetes</code> in your project.</p>
+</li>
+<li>
+<p>Download the following file to your the newly created folder:  </p>
+<ul>
+<li><a href="../files/kubernetes/deployment.yaml">deployment.yaml</a>  </li>
+</ul>
+</li>
+<li>
+<p>Open the file in an editor and verify that the <code>image:</code> key is referencing your previously built image.</p>
+</li>
+<li>
+<p>Deploy your application with the following command:  </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl apply -f src/kubernetes/deployment.yaml</span>
+</code></pre></div>
+</td></tr></table>
+</li>
+<li>
+<p>Verify that your application is running properly:  </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl get deployment</span>
+</code></pre></div>
+</td></tr></table>
+<p>You shoud now see one running <strong>Pod</strong>, which is scheduled by the <strong>Deployment</strong> that you just created.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The number of pods (more specifically, the number of containers) running is displayed in the "READY" column.</p>
+<p>1/1 means 1 container is working fine out of 1 expected, all good <img alt="💪" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f4aa.svg" title=":muscle:" /> !</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Even if you have one pod running, if now try to access your application REST APIs through your browser, it should <strong>NOT</strong> work.<br />
+(Unless you forgot to delete the docker container from previous Lab, in this case, the old container is repsonding, not the newly created pod !)</p>
+</div>
+</li>
+<li>
+<p>You can also check the running Pods in your Kubernetes cluster by typing:  </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl get pods</span>
+</code></pre></div>
+</td></tr></table>
+<p>This will give a list of running instances (a.k.a. Pods) of your application.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Write down the name of the Pod, you'll need it later for reference.</p>
+</div>
+</li>
+<li>
+<p>In order to <em>access</em> your application, you have to deploy a Kubernetes <strong>Service</strong>. <br />
+Download the following file to your <em>kubernetes</em> folder: </p>
+<ul>
+<li><a href="../files/kubernetes/service.yaml">service.yaml</a> </li>
+</ul>
+<p>and apply the following command:    </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl apply -f src/kubernetes/service.yaml</span>
+</code></pre></div>
+</td></tr></table>
+</li>
+<li>
+<p>You have now deployed a so called <strong>NodePort</strong> Kubernetes <strong>Service</strong>. It opens a dedicated port on your Minikube VM, through which you can access the according service.  </p>
+<p>You can find the associated port number by typing:  </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl get svc</span>
+</code></pre></div>
+</td></tr></table>
+<p>In the example below, the port number would be <strong>30080</strong>:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>$ kubectl get svc
+
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>        AGE
+kubernetes                  ClusterIP   <span class="m">10</span>.96.0.1        &lt;none&gt;        <span class="m">443</span>/TCP        14d
+yncrea-hellomicro-service   NodePort    <span class="m">10</span>.103.108.153   &lt;none&gt;        <span class="m">80</span>:30080/TCP   2m15s
+</code></pre></div>
+</td></tr></table>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If not set in the service, Kubernetes would allow a random NodePort between 30000 and 32767.</p>
+</div>
+</li>
+<li>
+<p>In your browser, open the IP of your Minikube VM (which you retrieved in the docker lab) and add the port that you retrieved from the last command, e.g.:    <a href="http://minikube-ip:30080">http://minikube-ip:30080</a>.  </p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>When using Docker Desktop embedded K8S in place of minikube, you can directly hit on <a href="http://localhost:30080">http://localhost:30080</a> !</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>You should see "Hello World" example from before, but it's hosted in Kubernetes <img alt="👍" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f44d.svg" title=":thumbsup:" />.  </p>
+<p>In addition you will notice that the micro service is now displaying the <em>hostname</em>. <br />
+Indeed, now the container is <strong>orchestrated</strong> by kubernetes, and kubernetes filled the default env vars such as <em>HOSTNAME</em> used in our microservice Java Code ;)</p>
+</div>
+</li>
+</ol>
+<hr />
+<h2 id="application-scaling">Application Scaling</h2>
+<ol>
+<li>
+<p>Now you'll see the scaling capabilities of Kubernetes. Enter the following command:  </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl.exe scale deployment/yncrea-hellomicro --replicas=3</span>
+</code></pre></div>
+</td></tr></table>
+<p>With this command, you update the Kubernetes <strong>Deployment</strong> and instruct it to have a total of <em>three</em> replicas. </p>
+<p>Kubernetes will handle that by instantiating <em>two</em> additional <strong>Pods</strong> to handle more workload.  </p>
+<p>You can easily check by doing <code>kubectl get pods</code>.  </p>
+</li>
+<li>
+<p>Refresh your browser several times and monitor how the hostname of your microservice changes. </p>
+<p>You may need to use <code>CTRL + F5</code></p>
+<p>Kubernetes is loadbalancing your request for you ! </p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Congratulations, you just learned how to scale a service in Kubernetes !</p>
+</div>
+</li>
+</ol>
+<hr />
+<h2 id="application-config">Application Config</h2>
+<ol>
+<li>
+<p>For the next step, we we'll see how to configure an application in Kubernetes.<br />
+   You might have noticed that in the main Java Class, we are referencing an environment variable <code>GREETING</code> with the default value <em>"You"</em>.<br />
+   In a first step, we will change the Kubernetes deployment and modify the environment variable section the Pod template:  </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl edit deployment yncrea-hellomicro</span>
+</code></pre></div>
+</td></tr></table>
+<p>Then modify the <code>GREETING</code> variable so the µS will greet yourself, and save.</p>
+<p>The deployement should be <code>Edited</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A K8S ressource edited with <code>kubectl edit</code> command is <strong>temporary</strong>. </p>
+<p>The modification will be lost when deleting / re-deploying the app.  </p>
+<p>The modificatin <strong>needs to be reported</strong> to the file <code>deployment.yaml</code> after you are satisfied with the result to make it permanent at each app deployment.</p>
+</div>
+</li>
+<li>
+<p>Refresh your browser, and see how to greeting changed.</p>
+</li>
+<li>
+<p>Now let's use another mean to configure our application: the Kubernetes <strong>ConfigMap</strong>. Download the sample ConfigMap to your <code>src/kubernetes</code> folder:  </p>
+<ul>
+<li><a href="../files/kubernetes/configmap.yaml">configmap.yaml</a></li>
+</ul>
+<p>This way, you can decouple the application from the deployment configuration and therefore ease the reusability of your application. </p>
+<p>You can deploy the ConfigMap with the following command:  </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl apply -f src/kubernetes/configmap.yaml</span>
+</code></pre></div>
+</td></tr></table>
+</li>
+<li>
+<p>Now, you'll have to modify your deployment in order to consume the ConfigMap:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl edit deployment yncrea-hellomicro</span>
+</code></pre></div>
+</td></tr></table>
+<p>And edit the file in the following way:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nt">spec</span><span class="p">:</span>
+      <span class="nt">containers</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">env</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">GREETING</span>
+<span class="hll">          <span class="nt">valueFrom</span><span class="p">:</span>
+</span><span class="hll">            <span class="nt">configMapKeyRef</span><span class="p">:</span>
+</span><span class="hll">              <span class="nt">key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">greeting</span>
+</span><span class="hll">              <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro-configmap</span>
+</span></code></pre></div>
+</td></tr></table>
+</li>
+<li>
+<p>Refresh your browser, and see how to greeting changed.</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Congratulations, you just learned how to configure an application in Kubernetes unsing Configmaps !</p>
+</div>
+</li>
+</ol>
+<hr />
+<h2 id="application-secrets">Application Secrets</h2>
+<p>Kubernetes also supports objects of the type <strong>Secret</strong>, that are meant to store sensitive data. </p>
+<p>Secrets can either be injected as environment variables or mounted in the Pods filesystem.</p>
+<p>As you already learned how to inject environment variables, let's now inject the Kubernetes secret as a file into our pod.</p>
+<ol>
+<li>
+<p>Deploy a secret in our Kubernetes cluster: </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl create secret generic yncrea-hellomicro-secret --from-literal=secret.txt=&quot;my very secret secret agent name&quot;</span>
+</code></pre></div>
+</td></tr></table>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can also create Secrets from a <a href="https://kubernetes.io/docs/concepts/configuration/secret/#creating-a-secret-manually">file</a>.
+It will be usefull later to automatize our deployment.</p>
+</div>
+</li>
+<li>
+<p>Update your Pod definiton (deployment) to mount the <em>yncrea-hellomicro-secret</em> secret in <code>/var/secret/</code> and to consume it :</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">kubectl edit deployment yncrea-hellomicro</span>
+</code></pre></div>
+</td></tr></table>
+<p>And edit the file in the following way:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">containers</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">env</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">GREETING</span>
+      <span class="nt">valueFrom</span><span class="p">:</span>
+        <span class="nt">configMapKeyRef</span><span class="p">:</span>
+          <span class="nt">key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">greeting</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro-configmap</span>
+<span class="hll">    <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">MY_SECRET</span>
+</span><span class="hll">      <span class="nt">valueFrom</span><span class="p">:</span>
+</span><span class="hll">        <span class="nt">secretKeyRef</span><span class="p">:</span>
+</span><span class="hll">          <span class="nt">key</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">secret.txt</span>
+</span><span class="hll">          <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro-secret</span>
+</span>    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test/cloudcomputing:latest</span>
+    <span class="nt">imagePullPolicy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro</span>
+    <span class="nt">ports</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">containerPort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8080</span>
+      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http</span>
+      <span class="nt">protocol</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
+    <span class="nt">resources</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+    <span class="nt">terminationMessagePath</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/dev/termination-log</span>
+    <span class="nt">terminationMessagePolicy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">File</span>
+<span class="hll">    <span class="nt">volumeMounts</span><span class="p">:</span>
+</span><span class="hll">    <span class="p p-Indicator">-</span> <span class="nt">mountPath</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/var/secret</span>
+</span><span class="hll">      <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro-secret</span>
+</span><span class="hll">      <span class="nt">readOnly</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</span>  <span class="nt">dnsPolicy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ClusterFirst</span>
+  <span class="nt">restartPolicy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Always</span>
+  <span class="nt">schedulerName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default-scheduler</span>
+  <span class="nt">securityContext</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+  <span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+<span class="hll">  <span class="nt">volumes</span><span class="p">:</span>
+</span><span class="hll">  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro-secret</span>
+</span><span class="hll">    <span class="nt">secret</span><span class="p">:</span>
+</span><span class="hll">      <span class="nt">secretName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro-secret</span>
+</span></code></pre></div>
+</td></tr></table>
+</li>
+<li>
+<p>Refresh your browser, and see how the <em>/secret</em> API changed and is now displaying your decoded secret !</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Congratulations, you just learned how to configure an application in Kubernetes using Secrets !</p>
+</div>
+</li>
+</ol>
+<hr />
+<h2 id="cleanup">Cleanup</h2>
+<p>Before going to next steps, it is important to cleanup all this *** we created manually to not conflict with later all-in-one deployment with Charts.</p>
+<div class="highlight"><pre><span></span><code>kubectl delete deployment yncrea-hellomicro
+kubectl delete service yncrea-hellomicro-service
+kubectl delete cm yncrea-hellomicro-configmap
+kubectl delete secret yncrea-hellomicro-secret
+</code></pre></div>
+<hr />
+<h2 id="helm-charts">Helm Charts</h2>
+<p>To deploy our containers on kubernetes, we could create k8s objects and deploy them individually as above.</p>
+<p>But why not creating a single <mark class="critic">release</mark> of our microservice deployment, nicely packaged with all the neeeded k8s objects ?
+We would then be able to install, upgrade, delete ... any release of our µS, in one single command, with one single package <img alt="🤔" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f914.svg" title=":thinking_face:" /> !</p>
+<p>The solution is : <strong>Helm Charts</strong>. Have a look to their awesome <a href="https://helm.sh/">documentation</a> <img alt="🧐" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f9d0.svg" title=":face_with_monocle:" /> !</p>
+<ol>
+<li>
+<p>Create the Chart</p>
+<p>According to documentation, we may adopt the appropriate <a href="https://helm.sh/docs/topics/charts/#the-chart-file-structure">structure</a>.</p>
+<p>In our case we have a very simple deployment and we DON'T need :</p>
+<ul>
+<li>
+<p>The <code>charts</code> directory since we have no subcharts</p>
+</li>
+<li>
+<p>The <code>crds</code> directory since we have no custom ressources</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>You can create the <code>Optional</code> files (documentation mainly) if you want to.</p>
+</div>
+</li>
+</ul>
+<p>So let's proceed :</p>
+<ul>
+<li>
+<p>Create the folders <code>src/helm/chart/yncrea-hellomicro</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The last folder <strong>MUST</strong> be named according to your Chart name ! (to define in the <code>Chart.yaml</code> file)</p>
+</div>
+</li>
+<li>
+<p>Inside, create the <code>templates</code> directory and move there the k8s objects we created previously :</p>
+<ul>
+<li><code>deployment.yaml</code></li>
+<li><code>service.yaml</code></li>
+<li><code>configmap.yaml</code></li>
+</ul>
+</li>
+<li>
+<p>Put the file <a href="../files/kubernetes/secret.yaml">secret.yaml</a> in your Chart's templates directory along side other files.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This is the secret we created manually before, now provisionned as a k8s ressource file for automation purpose !</p>
+</div>
+</li>
+<li>
+<p>Edit the <code>deployment.yaml</code> file (if not done already) to report the changes done previously (when we used <code>kubectl edit</code> commands) to get the env variables from the Configmap and the Secret.</p>
+</li>
+<li>
+<p>In the <code>Chart</code> folder (<code>src/helm/chart/yncrea-hellomicro</code>), download and put :</p>
+<ul>
+<li><a href="../files/kubernetes/Chart.yaml">Chart.yaml</a></li>
+<li><a href="../files/kubernetes/values.yaml">values.yaml</a></li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p><code>Chart.yaml</code> is the declaration of your Chart</p>
+<p><code>values.yaml</code> is the file meant to configure your Chart</p>
+</div>
+</li>
+<li>
+<p>Use the values defined in <code>values.yaml</code> to configure your Chart.</p>
+<details class="example"><summary>Solution for <code>deployment.yaml</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro</span>
+  <span class="nt">labels</span><span class="p">:</span>
+    <span class="nt">app.kubernetes.io/name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro</span>
+
+<span class="nt">spec</span><span class="p">:</span>
+<span class="hll">  <span class="nt">replicas</span><span class="p">:</span> <span class="p p-Indicator">{{</span> <span class="nv">.Values.replicaCount</span> <span class="p p-Indicator">}}</span>
+</span>  <span class="nt">selector</span><span class="p">:</span>
+    <span class="nt">matchLabels</span><span class="p">:</span>
+      <span class="nt">app.kubernetes.io/name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro</span>
+  <span class="nt">template</span><span class="p">:</span>
+    <span class="nt">metadata</span><span class="p">:</span>
+      <span class="nt">labels</span><span class="p">:</span>
+        <span class="nt">app.kubernetes.io/name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro</span>
+    <span class="nt">spec</span><span class="p">:</span>
+      <span class="nt">containers</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro</span>
+<span class="hll">          <span class="nt">image</span><span class="p">:</span> <span class="p p-Indicator">{{</span> <span class="nv">.Values.image.repository</span> <span class="p p-Indicator">}}</span><span class="l l-Scalar l-Scalar-Plain">:{{ .Values.image.version }}</span>
+</span>          <span class="nt">imagePullPolicy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span>
+          <span class="nt">ports</span><span class="p">:</span>
+            <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http</span>
+              <span class="nt">containerPort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8080</span>
+              <span class="nt">protocol</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
+</code></pre></div>
+</td></tr></table>
+</details>
+<details class="example"><summary>Solution for <code>service.yaml</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro-service</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">selector</span><span class="p">:</span>
+    <span class="nt">app.kubernetes.io/name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yncrea-hellomicro</span>
+  <span class="nt">ports</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">protocol</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
+      <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+      <span class="nt">targetPort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8080</span>
+<span class="hll">      <span class="nt">nodePort</span><span class="p">:</span> <span class="p p-Indicator">{{</span> <span class="nv">.Values.service.nodePort</span> <span class="p p-Indicator">}}</span>
+</span><span class="hll">  <span class="nt">type</span><span class="p">:</span> <span class="p p-Indicator">{{</span> <span class="nv">.Values.service.type</span> <span class="p p-Indicator">}}</span>
+</span></code></pre></div>
+</td></tr></table>
+</details>
+</li>
+</ul>
+</li>
+<li>
+<p>Deploy the Chart to Minikube using Helm</p>
+<p>Simply use the Helm CLI to deploy the Chart :</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">helm install silly-unicorn src/helm/chart/yncrea-hellomicro</span>
+</code></pre></div>
+</td></tr></table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We fix the name of the release ( <code>silly-unicorn</code> ) in order to be able to upgrade/delete it automatically. </p>
+<p>Otherwise, Helm would assign a random name.</p>
+</div>
+<p>Verify your Chart deployed properly the µS (its <mark class="critic">deployment</mark>, <mark class="critic">pods</mark>, <mark class="critic">configmap</mark>, <mark class="critic">secret</mark> and <mark class="critic">service</mark>). </p>
+<p>Check everything is working as expected by accessing your REST APIs (<code>/</code>, <code>/hello</code>, <code>/secret</code>) in your browser as done before.</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Congratulation, you deployed your fisrt Chart (or Application) using Helm !</p>
+</div>
+</li>
+<li>
+<p>Upgrade the release</p>
+<p>At this moment, we have our Chart ready, our app is running.</p>
+<p>But what if we want to update it ?</p>
+<p>Let's do a change in the code and add a new API <code>/new</code> returning a String "Hello from New API"  </p>
+<ul>
+<li>
+<p>Rebuild your project to publish your new release.</p>
+</li>
+<li>
+<p>Then try <mark class="critic">upgrading</mark> your application using :</p>
+<div class="highlight"><pre><span></span><code>helm upgrade silly-unicorn src/helm/chart/yncrea-hellomicro
+</code></pre></div>
+</li>
+<li>
+<p>Check the <code>/new</code> API is there and returning expected value.</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Congratulation, you upgraded your first application using Helm !</p>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2 id="deploying-automatically-with-maven">Deploying automatically with Maven :</h2>
+<p><strong>Automatize the build</strong> using Maven Helm plugin :</p>
+<ol>
+<li>
+<p><strong>Find</strong> the latest Helm plugin online</p>
+<p>Add the dependency to you pom.</p>
+<details class="example"><summary>Solution</summary><div class="highlight"><pre><span></span><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>com.kiwigrid<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>helm-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>5.4<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div>
+</details>
+</li>
+<li>
+<p><strong>Configure</strong> the plugin to :</p>
+<ul>
+<li><strong>Verify</strong> the Chart in the <mark class="critic">test</mark> phase using the <mark class="critic">lint</mark> goal</li>
+<li>
+<p><strong>Package</strong> the Chart into an archive in the <mark class="critic">package</mark> phase, using the <mark class="critic">package</mark> goal.</p>
+<details class="example"><summary>Solution</summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nt">&lt;build&gt;</span>
+        <span class="nt">&lt;plugins&gt;</span>
+            ...
+            <span class="nt">&lt;plugin&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>com.kiwigrid<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>helm-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>5.4<span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;configuration&gt;</span>
+                    <span class="nt">&lt;chartDirectory&gt;</span>${project.basedir}/src/helm/chart/yncrea-hellomicro<span class="nt">&lt;/chartDirectory&gt;</span>
+                    <span class="nt">&lt;chartVersion&gt;</span>${project.version}<span class="nt">&lt;/chartVersion&gt;</span>
+                    <span class="nt">&lt;outputDirectory&gt;</span>${project.build.directory}<span class="nt">&lt;/outputDirectory&gt;</span>
+                    <span class="c">&lt;!-- This is the related section to use local binary with auto-detection enabled. --&gt;</span>
+                    <span class="nt">&lt;useLocalHelmBinary&gt;</span>true<span class="nt">&lt;/useLocalHelmBinary&gt;</span>
+                <span class="nt">&lt;/configuration&gt;</span>
+                <span class="nt">&lt;executions&gt;</span>
+                    <span class="nt">&lt;execution&gt;</span>
+                        <span class="nt">&lt;id&gt;</span>helm-lint<span class="nt">&lt;/id&gt;</span>
+<span class="hll">                        <span class="nt">&lt;phase&gt;</span>test<span class="nt">&lt;/phase&gt;</span>
+</span>                        <span class="nt">&lt;goals&gt;</span>
+<span class="hll">                            <span class="nt">&lt;goal&gt;</span>lint<span class="nt">&lt;/goal&gt;</span>
+</span>                        <span class="nt">&lt;/goals&gt;</span>
+                    <span class="nt">&lt;/execution&gt;</span>
+                    <span class="nt">&lt;execution&gt;</span>
+                        <span class="nt">&lt;id&gt;</span>helm-package<span class="nt">&lt;/id&gt;</span>
+<span class="hll">                        <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+</span>                        <span class="nt">&lt;goals&gt;</span>
+<span class="hll">                            <span class="nt">&lt;goal&gt;</span>package<span class="nt">&lt;/goal&gt;</span>
+</span>                        <span class="nt">&lt;/goals&gt;</span>
+                    <span class="nt">&lt;/execution&gt;</span>
+                <span class="nt">&lt;/executions&gt;</span>
+            <span class="nt">&lt;/plugin&gt;</span>
+        <span class="nt">&lt;/plugins&gt;</span>
+    <span class="nt">&lt;/build&gt;</span>
+</code></pre></div>
+</td></tr></table>
+</details>
+</li>
+</ul>
+</li>
+<li>
+<p>Finally use a third plugin : <code>exec-maven-plugin</code> in order to (in the maven <code>pre-integration-test</code> phase):</p>
+<ul>
+<li>Delete the fixed-name release <code>silly-unicorn</code> if it exists.</li>
+<li>
+<p>Deploy the new release with the same name, of the Chart we just built </p>
+<details class="example"><summary>Solution</summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nt">&lt;build&gt;</span>
+        <span class="nt">&lt;plugins&gt;</span>
+            ...
+            <span class="nt">&lt;plugin&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>exec-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>${exec-maven-plugin.version}<span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;executions&gt;</span>
+                    <span class="nt">&lt;execution&gt;</span>
+                        <span class="nt">&lt;id&gt;</span>exec-helm-delete<span class="nt">&lt;/id&gt;</span>
+<span class="hll">                        <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span>                        <span class="nt">&lt;configuration&gt;</span>
+                            <span class="nt">&lt;executable&gt;</span>helm<span class="nt">&lt;/executable&gt;</span>
+                            <span class="nt">&lt;commandlineArgs&gt;</span>delete silly-unicorn --purge<span class="nt">&lt;/commandlineArgs&gt;</span>
+                            <span class="nt">&lt;successCodes&gt;</span>
+                                <span class="nt">&lt;successCode&gt;</span>0<span class="nt">&lt;/successCode&gt;</span>
+                                <span class="nt">&lt;successCode&gt;</span>1<span class="nt">&lt;/successCode&gt;</span>
+                            <span class="nt">&lt;/successCodes&gt;</span>
+                        <span class="nt">&lt;/configuration&gt;</span>
+                        <span class="nt">&lt;goals&gt;</span>
+<span class="hll">                            <span class="nt">&lt;goal&gt;</span>exec<span class="nt">&lt;/goal&gt;</span>
+</span>                        <span class="nt">&lt;/goals&gt;</span>
+                    <span class="nt">&lt;/execution&gt;</span>
+                    <span class="nt">&lt;execution&gt;</span>
+                        <span class="nt">&lt;id&gt;</span>exec-helm-install<span class="nt">&lt;/id&gt;</span>
+<span class="hll">                        <span class="nt">&lt;phase&gt;</span>pre-integration-test<span class="nt">&lt;/phase&gt;</span>
+</span>                        <span class="nt">&lt;configuration&gt;</span>
+                            <span class="nt">&lt;executable&gt;</span>helm<span class="nt">&lt;/executable&gt;</span>
+                            <span class="nt">&lt;commandlineArgs&gt;</span>install ${project.build.directory}/${project.artifactId}-${project.version}.tgz --name silly-unicorn --wait --debug<span class="nt">&lt;/commandlineArgs&gt;</span>
+                        <span class="nt">&lt;/configuration&gt;</span>
+                        <span class="nt">&lt;goals&gt;</span>
+<span class="hll">                            <span class="nt">&lt;goal&gt;</span>exec<span class="nt">&lt;/goal&gt;</span>
+</span>                        <span class="nt">&lt;/goals&gt;</span>
+                    <span class="nt">&lt;/execution&gt;</span>
+                <span class="nt">&lt;/executions&gt;</span>
+            <span class="nt">&lt;/plugin&gt;</span>
+        <span class="nt">&lt;/plugins&gt;</span>
+    <span class="nt">&lt;/build&gt;</span>
+</code></pre></div>
+</td></tr></table>
+</details>
+</li>
+</ul>
+</li>
+<li>
+<p>Last step, test the whole Docker + Helm chart build and deploy using maven <img alt="😃" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f603.svg" title=":smiley:" /> !  </p>
+<p><div class="highlight"><pre><span></span><code>mvn clean install
+</code></pre></div>
+It will create the docker image, push it to minikube registry. Then it will build the Helm chart, and install it to minikube, using the just pushed docker image.</p>
+<ul>
+<li>
+<p>Access your application REST APIs with your browser.</p>
+<p>Example : <a href="http://192.168.99.100:30080/hello">http://192.168.99.100:30080/hello</a></p>
+</li>
+</ul>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Congratulation, you can now do any code change on the application java code or the chart config, 
+you just have to execute a <code>mvn clean install</code> command to build and redeploy your latest app version automatically !</p>
+</div>
+<hr />
+</li>
+</ol>
+<h2 id="remote-debug">Remote Debug</h2>
+<p>In order to develop efficiently, remote debug is a must have.</p>
+<ol>
+<li>
+<p>First we need to update our <code>Dockerfile</code> to bootstrap a remote debug port (8000).</p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span> <span class="s">java:8</span>
+<span class="k">EXPOSE</span><span class="s"> 8080</span>
+<span class="k">ARG</span> <span class="nv">JAR_FILE</span><span class="o">=</span>target/*.jar
+<span class="k">COPY</span> <span class="si">${</span><span class="nv">JAR_FILE</span><span class="si">}</span> app.jar
+<span class="hll"><span class="k">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&quot;java&quot;</span><span class="p">,</span> <span class="s2">&quot;-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n&quot;</span><span class="p">,</span><span class="s2">&quot;-jar&quot;</span><span class="p">,</span><span class="s2">&quot;/app.jar&quot;</span><span class="p">]</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Don't forget to rebuild your Docker Image and to push it again to your local registry (or DockerHub).</p>
+</div>
+</li>
+<li>
+<p>Then we need to expose this port by modifying the <code>deployment.yaml</code></p>
+<div class="highlight"><pre><span></span><code>    <span class="l l-Scalar l-Scalar-Plain">...</span>
+         <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+           <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http</span>
+             <span class="nt">containerPort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8080</span>
+             <span class="nt">protocol</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<span class="hll">           <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">remote-debug</span>
+</span><span class="hll">             <span class="nt">containerPort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8000</span>
+</span><span class="hll">             <span class="nt">protocol</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>And finally create a <code>NodePort</code> in the <code>service.yaml</code> to make the debug port available from outside the K8S Cluster</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A good practice is to make this <code>NodePort</code> configurable through the <code>values.yaml</code></p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="c1">#values.yaml</span>
+<span class="nt">service</span><span class="p">:</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">NodePort</span>
+  <span class="nt">nodePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30080</span>
+<span class="hll">  <span class="nt">debugNodePort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30085</span>
+</span></code></pre></div>
+<div class="highlight"><pre><span></span><code> <span class="c1">#service.yaml</span>
+ <span class="nt">ports</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http</span>
+     <span class="nt">protocol</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
+     <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+     <span class="nt">targetPort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8080</span>
+     <span class="nt">nodePort</span><span class="p">:</span> <span class="p p-Indicator">{{</span> <span class="nv">.Values.service.nodePort</span> <span class="p p-Indicator">}}</span>
+<span class="hll">   <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">remote-debug</span>
+</span><span class="hll">     <span class="nt">protocol</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">TCP</span>
+</span><span class="hll">     <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8000</span>
+</span><span class="hll">     <span class="nt">targetPort</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8000</span>
+</span><span class="hll">     <span class="nt">nodePort</span><span class="p">:</span> <span class="p p-Indicator">{{</span> <span class="nv">.Values.service.debugNodePort</span> <span class="p p-Indicator">}}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>We can now update your Chart with the latest docker image and changes.</p>
+</li>
+<li>
+<p>Let's create a remote debug configuration in IntelliJ Idea, targetting our remote debug NodePort :</p>
+<p><img alt="Remote Debug" src="../files/kubernetes/rdeb.jpg" title="Remote Debug" /></p>
+</li>
+<li>
+<p>Try run this remote debug configuration, place a breakpoint in the Java Code of the <code>/hello</code> API Method.<br />
+Call the REST API using your browser and observe the execution stopping at your breakpoint.</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Congratulation, you can now deploy Helm Charts in Kubenretes &amp; remote debug your Java Applications !</p>
+</div>
+</li>
+</ol>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../docker/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Docker - Containers Lab
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../github/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Github - Git Repository Lab
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            &copy; 2020 Julien Berger
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/jurocknsail" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://hub.docker.com/repository/docker/jurocknsail/yncrea-hellomicro" target="_blank" rel="noopener" title="hub.docker.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M349.9 236.3h-66.1v-59.4h66.1v59.4zm0-204.3h-66.1v60.7h66.1V32zm78.2 144.8H362v59.4h66.1v-59.4zm-156.3-72.1h-66.1v60.1h66.1v-60.1zm78.1 0h-66.1v60.1h66.1v-60.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1l-13.3-8.9zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm-78.1-72.1h-66.1v60.1h66.1v-60.1z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://www.linkedin.com/in/julien-berger-0a9671154/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.8caa27b7.min.js"></script>
+      <script src="../assets/javascripts/bundle.193efd2f.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: ["tabs", "instant"],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.37585f48.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
