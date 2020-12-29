@@ -37,8 +37,8 @@ theme:
   logo: files/yncrea.png
   favicon: files/yncrea.png
   palette:
-    primary: blue
-    accent: blue
+    primary: cyan
+    accent: cyan
   font:
     text: Roboto
     code: Roboto Mono
